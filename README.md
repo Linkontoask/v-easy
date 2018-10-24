@@ -6,6 +6,13 @@
 	<img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt="">
 </p>
 
+<p align="center">
+	<img src="./img/success.png" alt="">
+	<img src="./img/error.png" alt="">
+	<img src="./img/warning.png" alt="">
+	<img src="./img/info.png" alt="">
+</p>
+
 ### Install
 ```
 npm install v-easy-message -s
@@ -16,6 +23,18 @@ npm install v-easy-message -s
 import msg from 'v-easy-message'
 
 Vue.use(msg);
+```
+
+### Code Start
+``` javascript
+this.$msg({
+    type: 'success', // 'error','info','warning'
+    message: 'infomation',
+    duration: 3000,
+    onClose: () => {
+        console.log('callback');
+    }
+});
 ```
 
 ### LICENSE
