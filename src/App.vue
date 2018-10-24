@@ -1,18 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Message ref="message" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Message from './components/message/message.vue' // 开发中 调试文件
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
-  }
+      Message
+  },
+    methods: {
+      send() {
+          var vm = this.$msg({
+              type: 'info',
+              message: '信息',
+              duration: 2000,
+              onClose: () => {
+              }
+          });
+      }
+    }
 }
 </script>
 
