@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import './style/webFont.css'
-import Message from './message'
+import Message from './lib/message'
 
 let MessageConstructor = Vue.extend(Message);
 

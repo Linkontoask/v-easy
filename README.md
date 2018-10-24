@@ -1,26 +1,21 @@
-# message
+<h1 align="center">v-easy-message</h1>
 
-## Project setup
-```
-npm install
-```
+<p align="center">
+	<img src="https://img.shields.io/badge/v--easy-v0.0.2-blue.svg" alt="">
+	<img src="https://img.shields.io/badge/size-541kb-green.svg" alt="">
+</p>
 
-### Compiles and hot-reloads for development
+### Install
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm install v-easy-message -s
 ```
 
-### Run your tests
-```
-npm run test
+### Quick Start
+``` javascript
+import msg from 'v-easy-message'
+
+Vue.use(msg);
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### LICENSE
+[MIT](https://github.com/Linkontoask/v-easy/blob/master/src/components/message/LICENSE)

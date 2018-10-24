@@ -19,3 +19,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+/src/components/message/packsge.json
+/src/components/message/message.vue
