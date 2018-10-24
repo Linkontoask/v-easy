@@ -7,10 +7,10 @@
 </p>
 
 <p align="center">
-	<img src="./img/success.png" alt="">
-	<img src="./img/error.png" alt="">
-	<img src="./img/warning.png" alt="">
-	<img src="./img/info.png" alt="">
+	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/success.png" alt="">
+	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/error.png" alt="">
+	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/warning.png" alt="">
+	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/info.png" alt="">
 </p>
 
 ### Install
