@@ -1,9 +1,10 @@
-<h1 align="center">v-easy-message</h1>
+<h1 align="center">V-easy</h1>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/v--easy-v0.0.2-blue.svg" alt="">
-	<img src="https://img.shields.io/badge/size-541kb-green.svg" alt="">
-	<img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt="">
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.0.4-blue.svg" alt=""></a>
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/size-541kb-green.svg" alt=""></a>
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt=""></a>
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>
 </p>
 
 <p align="center">
@@ -11,6 +12,7 @@
 	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/error.png" alt="">
 	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/warning.png" alt="">
 	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/info.png" alt="">
+	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/effect.png" alt="">
 </p>
 
 ### Install
@@ -27,14 +29,26 @@ Vue.use(vEasy);
 
 ### Code Start
 ``` javascript
-this.$msg({
-    type: 'success', // 'error','info','warning'
-    message: 'infomation',
-    duration: 3000,
-    onClose: () => {
-        console.log('callback');
+<template>
+    <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
+</template>
+
+<script>
+export default {
+    methods: {
+        send(type) {
+            this.$msg({
+                type: type, //'success', 'error','info','warning'
+                message: 'infomation',
+                duration: 3000,
+                onClose: () => {
+                    console.log('callback');
+                }
+            });
+        }
     }
-});
+}
+</script>
 ```
 
 ### LICENSE

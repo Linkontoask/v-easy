@@ -23,7 +23,7 @@
           <div class="car btn">
               <VEButton @click="send('info')" class="center" icon="spinner" :circle="true" :rotate="true"></VEButton>
               <VEButton @click="send('success')" class="center" type="success" icon="grav" :circle="true" :disabled="true"></VEButton>
-              <VEButton @click="send('info')" @mouseenter="enter" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
+              <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
               <VEButton @click="send('warning')" class="center" type="warning" icon="exclamation-triangle" :circle="true"  ></VEButton>
               <VEButton @click="send('error')" class="center" type="error" icon="user-circle" :circle="true" :mask="true"></VEButton>
           </div>
