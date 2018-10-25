@@ -29,14 +29,26 @@ Vue.use(vEasy);
 
 ### Code Start
 ``` javascript
-this.$msg({
-    type: 'success', // 'error','info','warning'
-    message: 'infomation',
-    duration: 3000,
-    onClose: () => {
-        console.log('callback');
+<template>
+    <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
+</template>
+
+<script>
+export default {
+    methods: {
+        send(type) {
+            this.$msg({
+                type: type, //'success', 'error','info','warning'
+                message: 'infomation',
+                duration: 3000,
+                onClose: () => {
+                    console.log('callback');
+                }
+            });
+        }
     }
-});
+}
+</script>
 ```
 
 ### LICENSE
