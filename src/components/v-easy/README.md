@@ -20,9 +20,9 @@ npm install v-easy-message -s
 
 ### Quick Start
 ``` javascript
-import msg from 'v-easy-message'
+import vEasy from 'v-easy-message'
 
-Vue.use(msg);
+Vue.use(vEasy);
 ```
 
 ### Code Start

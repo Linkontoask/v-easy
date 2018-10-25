@@ -90,7 +90,7 @@ export default {
   @error: #f56c6c;
   @info: #909399;
   .message {
-    min-width: 380px;
+    min-width: 340px;
     box-sizing: border-box;
     border-radius: 4px;
     border: 1px solid #ebeef5;
@@ -117,6 +117,7 @@ export default {
     .easy_message_close {
       position: absolute;
       right: 15px;
+      top: 15px;
     }
     .fa-times {
       cursor: pointer;

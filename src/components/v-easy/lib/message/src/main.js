@@ -1,10 +1,8 @@
 import Vue from 'vue'
-import './style/webFont.css'
-import Message from './lib/message'
+import '../../../style/webFont.css'
+import Message from './message'
 
 let MessageConstructor = Vue.extend(Message);
-
-const Msg = {};
 
 let instances = [];
 let id = 0;
@@ -45,8 +43,4 @@ MessageFn.close = function(id, userOnClose) {
     }
 };
 
-Msg.install = function (Vue) {
-    Vue.prototype.$msg = MessageFn;
-};
-
-export default Msg
+export default MessageFn

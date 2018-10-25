@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import msg from './components/message/index'
+import Message from './components/v-easy/index'
 
 Vue.config.productionTip = false;
 
-Vue.use(msg);
+Vue.use(Message);
 
 new Vue({
   render: h => h(App)
