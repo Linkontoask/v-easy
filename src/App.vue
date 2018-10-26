@@ -3,16 +3,14 @@
     <!--<Message />-->
       <h1><i class="fa fa-hand-o-right" aria-hidden="true" style="margin-right: 10px;"></i>V-easy<i class="fa fa-hand-o-left" aria-hidden="true" style="margin-left: 10px;"></i></h1>
       <div class="group">
-          <h4><i class="fa fa-tag"></i>触发Message弹框</h4>
-          <div class="car">
-              <div class="target success" @click="send('success')">success</div>
-              <div class="target warning" @click="send('warning')">warning</div>
-              <div class="target info" @click="send('info')">info</div>
-              <div class="target error" @click="send('error')">error</div>
-          </div>
-      </div>
-      <div class="group">
           <h4><i class="fa fa-tag"></i>按钮</h4>
+          <div class="car btn">
+              <VEButton @click="send('info')" class="center" :plain="true" icon="snowflake-o">info</VEButton>
+              <VEButton @click="send('success')" class="center" :plain="true" type="success" icon="bath">success</VEButton>
+              <VEButton @click="send('info')" class="center" :plain="true" type="primary" icon="telegram">primary</VEButton>
+              <VEButton @click="send('warning')" class="center" :plain="true" type="warning" icon="etsy">warning</VEButton>
+              <VEButton @click="send('error')" class="center" :plain="true" type="error" icon="superpowers">error</VEButton>
+          </div>
           <div class="car btn">
               <VEButton @click="send('info')" class="center" icon="quote-right">普通按钮</VEButton>
               <VEButton @click="send('success')" class="center" type="success" :mask="true">成功按钮</VEButton>
@@ -109,7 +107,6 @@ export default {
         border-radius: 6px;
         cursor: pointer;
         width: 100px;
-
         border: 1px solid #eeeeee;
     }
     .success {

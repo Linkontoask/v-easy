@@ -123,7 +123,25 @@
         opacity: .4;
         cursor: not-allowed;
     }
-    .is-disabled:hover button{
+    .button.is-plain button {
+        background: none;
+        border: 1px solid #eeeeee;
+    }
+    .button.is-plain.easy-button-primary button{
+        color: @info;
+        border: 1px solid #eeeeee;
+    }
+    .button.is-plain.easy-button-success button{
+        color: @success;
+        border: 1px solid #eeeeee;
+    }
+    .button.is-plain.easy-button-warning button{
+        color: @warning;
+        border: 1px solid #eeeeee;
+    }
+    .button.is-plain.easy-button-error button{
+        color: @error;
+        border: 1px solid #eeeeee;
     }
     .button.easy-button-primary:hover button{
         color: #fff;
