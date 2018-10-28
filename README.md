@@ -15,6 +15,9 @@
 	<img src="./img/effect.png" alt="">
 </p>
 
+### Demo
+[OnlineDemo](https://linkontoask.github.io/demo/v-easy/index.html)
+
 ### Install
 ```
 npm install v-easy-message -s
