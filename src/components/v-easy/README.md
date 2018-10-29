@@ -15,6 +15,10 @@
 	<img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/effect.png" alt="">
 </p>
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Linkontoask/v-easy/master/img/ip.png" alt="">
+</p>
+
 ### Demo
 [OnlineDemo](https://linkontoask.github.io/demo/v-easy/index.html)
 

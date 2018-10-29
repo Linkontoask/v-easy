@@ -1,9 +1,11 @@
 import Message from './lib/message/index'
 import Button from './lib/button/index'
+import Ip from './lib/input/index'
 
 const components = [
     Message,
-    Button
+    Button,
+    Ip
 ];
 
 const install = function (Vue) {

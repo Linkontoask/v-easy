@@ -26,6 +26,13 @@
               <VEButton @click="send('error')" class="center" type="error" icon="user-circle" :circle="true" :mask="true"></VEButton>
           </div>
       </div>
+      <div class="group">
+          <h4><i class="fa fa-tag"></i>输入框</h4>
+          <div class="car">
+              <VEIp v-model="ip"></VEIp>
+              <span v-if="ip.length !== 0">{{ ip.join('.') }}</span>
+          </div>
+      </div>
   </div>
 
 </template>
@@ -38,6 +45,13 @@ export default {
   components: {
       // Message
   },
+    data() {
+      return {
+          ip: []
+      }
+    },
+    watch: {
+    },
     methods: {
         enter() {
             this.send('success');
@@ -91,7 +105,7 @@ export default {
         flex-wrap: wrap;
         border: 1px solid #eee;
         padding: 12px 0;
-        div {
+        > div {
             margin: 12px;
         }
     }
