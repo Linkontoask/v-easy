@@ -29,8 +29,14 @@
       <div class="group">
           <h4><i class="fa fa-tag"></i>输入框</h4>
           <div class="car">
-              <VEIp v-model="ip"></VEIp>
-              <span v-if="ip.length !== 0">{{ ip.join('.') }}</span>
+              <h5>IPV4</h5>
+              <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址"></VEIp>
+              <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+          </div>
+          <div class="car">
+              <h5>IPV6</h5>
+              <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址"></VEIp>
+              <span v-if="ipv6.length !== 0">{{ ipv6.join('.') }}</span>
           </div>
       </div>
   </div>
@@ -47,7 +53,8 @@ export default {
   },
     data() {
       return {
-          ip: []
+          ipv4: [114,114,114,114],
+          ipv6: []
       }
     },
     watch: {
@@ -107,6 +114,12 @@ export default {
         padding: 12px 0;
         > div {
             margin: 12px;
+        }
+        h5 {
+            width: 100%;
+            text-align: left;
+            padding-left: 1.6rem;
+            margin-bottom: 0.4rem;
         }
     }
     .car+.car {
