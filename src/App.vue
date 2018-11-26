@@ -30,7 +30,7 @@
           <h4><i class="fa fa-tag"></i>输入框</h4>
           <div class="car">
               <h5>IPV4</h5>
-              <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址"></VEIp>
+              <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
               <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
           </div>
           <div class="car">
@@ -60,6 +60,12 @@ export default {
     watch: {
     },
     methods: {
+        input(val) {
+            console.log(val);
+        },
+        error(ip) {
+            console.log('error', ip)
+        },
         enter() {
             this.send('success');
         },

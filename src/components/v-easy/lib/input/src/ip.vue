@@ -30,13 +30,11 @@
 
         data() {
           return {
-              result: this.value === undefined || this.value === null
-                  ? ''
-                  : this.value,
               inputRed: [],
               currentIndex: 0,
               maxlength: '3',
-              isIP: false
+              isIP: false,
+              isString: false
           }
         },
 
@@ -50,11 +48,23 @@
 
         watch: {
             result(val) {
-                this.$emit('changeResult', val);
+                this.$emit('changeResult', this.isString ? val.join('.') : val);
             }
         },
 
         computed: {
+            result() {
+                let data = [];
+                data = this.value === undefined || this.value === null
+                    ? []
+                    : this.value;
+                if (!Array.isArray(this.value)) {
+                    this.isString = true;
+                    data = data.split('.');
+                }
+                return data;
+
+            },
             splitChar() {
                 if (this.spliceChar !== '.') {
                     return this.spliceChar;
@@ -81,6 +91,11 @@
         methods: {
             checkResult(index, $event) {
 
+                // 传入value为string
+                if (this.isString) {
+                    this.$emit('changeResult', this.result.join('.'));
+                }
+
                 this.format === 'ipv4' ? this.isIpv4(index) : this.isIpv6(index, $event);
 
                 // 自动对焦
@@ -88,7 +103,8 @@
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
-                this.$emit('input', index);
+                this.$emit('input', this.isString ? this.result.join('.') : this.result);
+
             },
 
             isIpv4(index) {
@@ -107,12 +123,14 @@
                 if (this.result[index] > 255 && (!regexp.test(this.result.join('.'))) && this.result[index] && this.result[index].toString().length !== 0) {
                     this.inputRed[index] = 'red';
                     this.isIP = true;
+                    this.$emit('error', this.isString ? this.result.join('.') : this.result);
                 } else {
                     this.inputRed[index] = 'none';
                     this.isIP = false;
                     this.inputRed.forEach(item => {
                         if (item === 'red') {
                             this.isIP = true;
+                            this.$emit('error', this.isString ? this.result.join('.') : this.result);
                         }
                     });
                 }
@@ -133,7 +151,12 @@
             handelBlur(index) {
                 if (index === 7) {
                     let regexp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
-                    regexp.test(this.result.join(':')) ? this.isIP = false : this.isIP = true;
+                    if (regexp.test(this.result.join(':'))) {
+                        this.isIP = false
+                    } else {
+                        this.isIP = true;
+                        this.$emit('error', this.result);
+                    }
                 }
                 this.$emit('blur', index);
             },
