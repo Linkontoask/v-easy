@@ -29,9 +29,16 @@
       <div class="group">
           <h4><i class="fa fa-tag"></i>输入框</h4>
           <div class="car">
-              <h5>IPV4</h5>
-              <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
-              <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+              <div class="car-item">
+                  <h5>IPV4</h5>
+                  <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
+                  <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+              </div>
+              <div class="car-item">
+                  <h5>IPV4(只读)</h5>
+                  <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+                  <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+              </div>
           </div>
           <div class="car">
               <h5>IPV6</h5>
@@ -124,8 +131,16 @@ export default {
         h5 {
             width: 100%;
             text-align: left;
-            padding-left: 1.6rem;
+            margin-top: 0;
+            padding-left: .5rem;
             margin-bottom: 0.4rem;
+        }
+        .car-item {
+            width: 420px;
+            span {
+                display: block;
+                margin-top: -60px;
+            }
         }
     }
     .car+.car {

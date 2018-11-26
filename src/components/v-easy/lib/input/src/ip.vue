@@ -131,6 +131,7 @@
                         if (item === 'red') {
                             this.isIP = true;
                             this.$emit('error', this.isString ? this.result.join('.') : this.result);
+                            this.$emit('error', this.isString ? this.result.join('.') : this.result);
                         }
                     });
                 }
@@ -178,17 +179,20 @@
     .v-easy-input {
         position: relative;
         height: 40px;
-        padding: 4px;
+        padding: 0 4px;
         color: @info;
+        margin-bottom: 30px;
+        max-width: 130px;
         ul {
-            min-width: 198px;
-            min-height: 34px;
+            min-width: 128px;
+            min-height: 38px;
             margin: 0;
             padding: 0;
             height: 80%;
-            border: 1px solid #eee;
+            border: 1px solid #c0c4cc;
+            border-radius: 4px;
             .ipv4 {
-                width: 48px;
+                width: 28px;
             }
             .ipv6 {
                 width: 62px;
@@ -197,9 +201,11 @@
                 position: relative;
                 list-style-type: none;
                 float: left;
-                width: 48px;
-                height: calc(100% - 2px);
+                height: 100%;
                 vertical-align: center;
+                width: 48px;
+                overflow: visible;
+                margin-right: 4px;
                 input {
                     position: absolute;
                     top: 0;
@@ -208,9 +214,8 @@
                     color: @inputColor;
                     margin: auto;
                     text-align: center;
-                    width: calc(100% - 24px);
+                    width: 100%;
                     height: 64%;
-                    padding: 0 8px;
                     border: none;
                 }
                 input:focus {
@@ -218,8 +223,8 @@
                 }
                 span {
                     position: absolute;
-                    bottom: 8px;
-                    right: 0;
+                    bottom: 12px;
+                    right: -4px;
                     color: #333;
                     user-select: none;
                 }
