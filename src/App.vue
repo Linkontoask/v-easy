@@ -31,13 +31,15 @@
           <div class="car">
               <div class="car-item">
                   <h5>IPV4</h5>
-                  <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
-                  <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+                  <VEIp v-model="ipv4" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>
-                  <VEIp v-model="ipv4" format="ipv4" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
-                  <span v-if="ipv4.length !== 0">{{ ipv4.join('.') }}</span>
+                  <VEIp v-model="ipv4" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+              </div>
+              <div class="car-item">
+                  <h5>子网掩码</h5>
+                  <VESubnet v-model="subMask" maxWidth="120" style="color: red"></VESubnet>
               </div>
           </div>
           <div class="car">
@@ -61,7 +63,9 @@ export default {
     data() {
       return {
           ipv4: [114,114,114,114],
-          ipv6: []
+          ipv6: [],
+          // subMask: [255,255,0,0]
+          subMask: '255.255.252.0'
       }
     },
     watch: {
@@ -136,7 +140,7 @@ export default {
             margin-bottom: 0.4rem;
         }
         .car-item {
-            width: 420px;
+            width: 220px;
             span {
                 display: block;
                 margin-top: -60px;

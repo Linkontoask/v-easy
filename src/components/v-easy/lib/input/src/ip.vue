@@ -1,6 +1,6 @@
 <template>
     <div class="v-easy-input input input-ip"
-        :class="">
+        :style="{'max-width': maxWidth + 'px'}">
         <ul ref="box">
             <li v-for="(item, index) in vHtml" :key="index" :class="format">
                 <input type="text"
@@ -39,6 +39,7 @@
         },
 
         props: {
+            maxWidth: {type: String},
             spliceChar: {type: String, default: '.'},
             readonly: {type: Boolean, default: false},
             message: {type: String, default: '请输入正确的IP地址'},
@@ -173,79 +174,5 @@
 </script>
 
 <style scoped lang="less">
-    @info: #909399;
-    @inputColor: #606266;
-    @error: #f56c6c;
-    .v-easy-input {
-        position: relative;
-        height: 40px;
-        padding: 0 4px;
-        color: @info;
-        margin-bottom: 30px;
-        max-width: 130px;
-        ul {
-            min-width: 128px;
-            min-height: 38px;
-            margin: 0;
-            padding: 0;
-            height: 80%;
-            border: 1px solid #c0c4cc;
-            border-radius: 4px;
-            .ipv4 {
-                width: 28px;
-            }
-            .ipv6 {
-                width: 62px;
-            }
-            li {
-                position: relative;
-                list-style-type: none;
-                float: left;
-                height: 100%;
-                vertical-align: center;
-                width: 48px;
-                overflow: visible;
-                margin-right: 4px;
-                input {
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    color: @inputColor;
-                    margin: auto;
-                    text-align: center;
-                    width: 100%;
-                    height: 64%;
-                    border: none;
-                }
-                input:focus {
-                    outline: none;
-                }
-                span {
-                    position: absolute;
-                    bottom: 12px;
-                    right: -4px;
-                    color: #333;
-                    user-select: none;
-                }
-                .none {
-                    color: @inputColor;
-                }
-                .red {
-                    color: @error;
-                }
-            }
-        }
-        .inspection {
-            color: #f56c6c;
-            font-size: 12px;
-            text-align: left;
-            margin: 6px 0;
-            transition: all 0.3s;
-        }
-    }
-    .v-easy-error-enter, .v-easy-error-leave-to {
-        transform: translate(0, -100%);
-        opacity: 0;
-    }
+    @import "../../../style/input/input";
 </style>
