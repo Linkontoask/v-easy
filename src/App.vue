@@ -31,7 +31,7 @@
           <div class="car">
               <div class="car-item">
                   <h5>IPV4</h5>
-                  <VEIp v-model="ipv4" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
+                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>
@@ -39,7 +39,7 @@
               </div>
               <div class="car-item">
                   <h5>子网掩码</h5>
-                  <VESubnet v-model="subMask" maxWidth="120" style="color: red"></VESubnet>
+                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="120" style="color: red"></VESubnet>
               </div>
           </div>
           <div class="car">
@@ -62,7 +62,7 @@ export default {
   },
     data() {
       return {
-          ipv4: [114,114,114,114],
+          ipv4: [],
           ipv6: [],
           // subMask: [255,255,0,0]
           subMask: '255.255.252.0'
@@ -71,11 +71,14 @@ export default {
     watch: {
     },
     methods: {
+        statusSay(val) {
+            // console.log(val);
+        },
         input(val) {
-            console.log(val);
+            // console.log(val);
         },
         error(ip) {
-            console.log('error', ip)
+            // console.log('error', ip)
         },
         enter() {
             this.send('success');

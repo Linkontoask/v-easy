@@ -48,8 +48,18 @@
         },
 
         watch: {
+            isIP(val) {
+                this.$emit('status', !val);
+            },
             result(val) {
                 this.$emit('changeResult', this.isString ? val.join('.') : val);
+                let statusSuccess = true;
+                for (let i = 0; i < 4; i++) {
+                    if (typeof val[i] === 'undefined') {
+                        statusSuccess = false;
+                    }
+                }
+                if (statusSuccess && val.length > 3) this.$emit('status', this.isIpv4Reg(val.join('.')));
             }
         },
 
@@ -115,13 +125,12 @@
                 // 结束
 
                 // 正则检验
-                let regexp = /^(?:(?:2[0-4][0-9]\.)|(?:25[0-5]\.)|(?:1[0-9][0-9]\.)|(?:[1-9][0-9]\.)|(?:[0-9]\.)){3}(?:(?:2[0-4][0-9])|(?:25[0-5])|(?:1[0-9][0-9])|(?:[1-9][0-9])|(?:[0-9]))$/;
 
                 if (this.result[index] && this.result[index].length > 3 && index === 3) {
                     this.result[index] = this.result[index].substring(4, 1);
                 }
 
-                if (this.result[index] > 255 && (!regexp.test(this.result.join('.'))) && this.result[index] && this.result[index].toString().length !== 0) {
+                if (this.result[index] > 255 && (!this.isIpv4Reg(this.result.join('.'))) && this.result[index] && this.result[index].toString().length !== 0) {
                     this.inputRed[index] = 'red';
                     this.isIP = true;
                     this.$emit('error', this.isString ? this.result.join('.') : this.result);
@@ -136,6 +145,11 @@
                         }
                     });
                 }
+            },
+
+            isIpv4Reg(ip) {
+                let regexp = /^(?:(?:2[0-4][0-9]\.)|(?:25[0-5]\.)|(?:1[0-9][0-9]\.)|(?:[1-9][0-9]\.)|(?:[0-9]\.)){3}(?:(?:2[0-4][0-9])|(?:25[0-5])|(?:1[0-9][0-9])|(?:[1-9][0-9])|(?:[0-9]))$/;
+                return regexp.test(ip);
             },
 
             isIpv6(index, $event) {

@@ -36,7 +36,18 @@
         },
 
         watch: {
-
+            isMask(val) {
+                this.$emit('status', !val);
+            },
+            result(val) {
+                let statusSuccess = true;
+                for (let i = 0; i < 4; i++) {
+                    if (typeof val[i] === 'undefined') {
+                        statusSuccess = false;
+                    }
+                }
+                if (statusSuccess && val.length > 3) this.$emit('status', this.checkSub(val.join('.')));
+            }
         },
 
         props: {
@@ -80,6 +91,9 @@
                         this.errorClass[index] = 'none'
                     }
                 } else {
+                    for(let i = index; i < this.maxs.length; i++) {
+                        this.maxs[i] = '3'
+                    }
                     let regexp = /^(255|254|252|248|240|224|192|128|0)$/;
                     if (!regexp.test(this.result[index]) && this.result[index].length === 3) {
                         this.errorClass[index] = 'red';
@@ -113,11 +127,14 @@
                 this.result.forEach((item) => {
                     item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
                 });
-                let regexp = /^(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))$/;
-                if (isCheck && !regexp.test(this.result.join('.'))) {
+                if (isCheck && !this.checkSub(this.result.join('.'))) {
                     this.isMask = true;
                 }
                 this.$emit('blur', index);
+            },
+            checkSub(mask) {
+                let regexp = /^(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))$/;
+                return regexp.test(mask);
             },
             handleFocus(index) {
                 this.currentIndex = index;
