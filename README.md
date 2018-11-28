@@ -7,19 +7,6 @@
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>
 </p>
 
-<p align="center">
-	<img src="./img/success.png" alt="">
-	<img src="./img/error.png" alt="">
-	<img src="./img/warning.png" alt="">
-	<img src="./img/info.png" alt="">
-	<img src="./img/effect.png" alt="">
-</p>
-
-<p align="center">
-    <img src="./img/ip.png" alt="">
-</p>
-
-
 ### Demo
 [OnlineDemo](https://linkontoask.github.io/demo/v-easy/index.html)
 
