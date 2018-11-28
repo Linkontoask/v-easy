@@ -1,13 +1,19 @@
 <template>
     <div class="v-easy-input input input-subnet"
-         :style="{'max-width': maxWidth + 'px'}">
-        <ul ref="box">
+         :style="{
+                'max-width': maxWidth + 'px',
+                'width': width + 'px'
+         }">
+        <ul ref="box" :class="disabled
+                              ? 'disabled'
+                              : ''">
             <li v-for="(val, index) in maxs" :key="index">
                 <input type="text"
                        v-model="result[index]"
                        :readonly="readonly"
                        :class="errorClass[index]"
                        :maxlength="maxs[index]"
+                       :disabled="disabled"
                        @keydown="handleKeyDown"
                        @focus="handleFocus(index)"
                        @input="handleInput(index)"
@@ -52,6 +58,8 @@
 
         props: {
             maxWidth: {type: String},
+            width: [String],
+            disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
             message: {type: String, default: '请输入正确的子网掩码'},
             readonly: {type: Boolean, default: false},

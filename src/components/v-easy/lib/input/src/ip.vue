@@ -1,13 +1,19 @@
 <template>
-    <div class="v-easy-input input input-ip"
-        :style="{'max-width': maxWidth + 'px'}">
-        <ul ref="box">
+    <div :class="['v-easy-input', 'input', 'input-ip']"
+        :style="{
+                'max-width': maxWidth + 'px',
+                'width': width + 'px'
+         }">
+        <ul ref="box" :class="disabled
+                              ? 'disabled'
+                              : ''">
             <li v-for="(item, index) in vHtml" :key="index" :class="format">
                 <input type="text"
                        :maxlength="maxlength"
                        v-model="result[index]"
                        :readonly="readonly"
                        :class="inputRed[index]"
+                       :disabled="disabled"
                        @keydown="keyDown"
                        @input="checkResult(index, $event)"
                        @focus="next(index)"
@@ -40,6 +46,8 @@
 
         props: {
             maxWidth: {type: String},
+            width: [String],
+            disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
             readonly: {type: Boolean, default: false},
             message: {type: String, default: '请输入正确的IP地址'},

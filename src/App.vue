@@ -30,22 +30,53 @@
           <h4><i class="fa fa-tag"></i>输入框</h4>
           <div class="car">
               <div class="car-item">
+                  <h5>IPV4(禁用)</h5>
+                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :disabled="true"></VEIp>
+              </div>
+              <div class="car-item">
                   <h5>IPV4</h5>
-                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
+                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>
-                  <VEIp v-model="ipv4" format="ipv4" maxWidth="120" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+                  <VEIp v-model="ipv4" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+              </div>
+              <div class="car-item">
+                  <h5>子网掩码(禁用)</h5>
+                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" :disabled="true"></VESubnet>
               </div>
               <div class="car-item">
                   <h5>子网掩码</h5>
-                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="120" style="color: red"></VESubnet>
+                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red"></VESubnet>
               </div>
           </div>
           <div class="car">
-              <h5>IPV6</h5>
-              <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址"></VEIp>
-              <span v-if="ipv6.length !== 0">{{ ipv6.join('.') }}</span>
+              <div class="car-item">
+                  <h5>IPV6</h5>
+                  <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址" width="530"></VEIp>
+                  <span v-if="ipv6.length !== 0">{{ ipv6.join('.') }}</span>
+              </div>
+          </div>
+          <div class="car box">
+              <div class="car-item remove-margin">
+                  <h5>校验框(长度校验,失去焦点触发)</h5>
+                  <VEPlainInput v-model="plain[0]" message="字符超出范围" :options="{
+                    min: 10,
+                    max: 20
+                  }"></VEPlainInput>
+              </div>
+              <div class="car-item remove-margin">
+                  <h5>校验框(正则校验手机号,失去焦点触发)</h5>
+                  <VEPlainInput v-model="plain[1]" message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$"></VEPlainInput>
+              </div>
+              <div class="car-item remove-margin">
+                  <h5>校验框(输入时触发)</h5>
+                  <VEPlainInput v-model="plain[2]" message="名字中必须包含link" type="reg" inspect="link" target="input"></VEPlainInput>
+              </div>
+              <div class="car-item remove-margin">
+                  <h5>禁用</h5>
+                  <VEPlainInput v-model="plain[3]" disabled="true"></VEPlainInput>
+              </div>
           </div>
       </div>
   </div>
@@ -65,7 +96,8 @@ export default {
           ipv4: [],
           ipv6: [],
           // subMask: [255,255,0,0]
-          subMask: '255.255.252.0'
+          subMask: '255.255.252.0',
+          plain: []
       }
     },
     watch: {
@@ -126,12 +158,17 @@ export default {
         }
     }
     .car {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: flex-start;
         flex-wrap: wrap;
         border: 1px solid #eee;
         padding: 12px 0;
+        min-height: 64px;
+        span {
+            margin-top: -28px;
+        }
         > div {
             margin: 12px;
         }
@@ -149,9 +186,28 @@ export default {
                 margin-top: -60px;
             }
         }
+        .remove-margin {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        @left: 260px;
+        .remove-margin:nth-child(2) {
+            left: @left * 1;
+            width: 236px;
+        }
+        .remove-margin:nth-child(3) {
+            left: @left * 2;
+        }
+        .remove-margin:nth-child(4) {
+            left: @left * 3;
+        }
     }
     .car+.car {
         margin-top: 12px;
+    }
+    .box {
+        min-height: 84px;
     }
     .btn {
         justify-content: flex-start;

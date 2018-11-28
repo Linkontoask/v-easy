@@ -2,12 +2,14 @@ import Message from './lib/message/index'
 import Button from './lib/button/index'
 import Ip from './lib/input/index'
 import Subnet from './lib/subnet/index'
+import VEPlainInput from './lib/plainInput/index'
 
 const components = [
     Message,
     Button,
     Ip,
-    Subnet
+    Subnet,
+    VEPlainInput
 ];
 
 const install = function (Vue) {
