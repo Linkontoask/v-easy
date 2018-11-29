@@ -35,47 +35,54 @@
               </div>
               <div class="car-item">
                   <h5>IPV4</h5>
-                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input"></VEIp>
+                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="inputTest"></VEIp>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>
-                  <VEIp v-model="ipv4" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+                  <VEIp v-model="ipv4Model" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
               </div>
               <div class="car-item">
                   <h5>子网掩码(禁用)</h5>
                   <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" :disabled="true"></VESubnet>
               </div>
               <div class="car-item">
+                  <h5>子网掩码(只读)</h5>
+                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" readonly="true"></VESubnet>
+              </div>
+              <div class="car-item">
                   <h5>子网掩码</h5>
-                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red"></VESubnet>
+                  <VESubnet v-model="subMaskTest" @status="statusSay" maxWidth="140" style="color: red" @input="subTest"></VESubnet>
               </div>
           </div>
           <div class="car">
               <div class="car-item">
                   <h5>IPV6</h5>
                   <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址" width="530"></VEIp>
-                  <span v-if="ipv6.length !== 0">{{ ipv6.join('.') }}</span>
               </div>
           </div>
           <div class="car box">
               <div class="car-item remove-margin">
                   <h5>校验框(长度校验,失去焦点触发)</h5>
-                  <VEPlainInput v-model="plain[0]" message="字符超出范围" :options="{
+                  <VEPlainInput v-model="plain.q" message="字符超出范围" :options="{
                     min: 10,
                     max: 20
-                  }"></VEPlainInput>
+                  }" @input="plainInput"></VEPlainInput>
               </div>
               <div class="car-item remove-margin">
                   <h5>校验框(正则校验手机号,失去焦点触发)</h5>
-                  <VEPlainInput v-model="plain[1]" message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$"></VEPlainInput>
+                  <VEPlainInput v-model="plain.w" message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" @input="plainInput"></VEPlainInput>
               </div>
               <div class="car-item remove-margin">
                   <h5>校验框(输入时触发)</h5>
-                  <VEPlainInput v-model="plain[2]" message="名字中必须包含link" type="reg" inspect="link" target="input"></VEPlainInput>
+                  <VEPlainInput v-model="plain.e" message="名字中必须包含link" type="reg" inspect="link" target="input" @input="plainInput"></VEPlainInput>
               </div>
               <div class="car-item remove-margin">
                   <h5>禁用</h5>
-                  <VEPlainInput v-model="plain[3]" disabled="true"></VEPlainInput>
+                  <VEPlainInput v-model="plain.r" disabled="true"></VEPlainInput>
+              </div>
+              <div class="car-item remove-margin">
+                  <h5>只读</h5>
+                  <VEPlainInput v-model="plain.t" readonly="true"></VEPlainInput>
               </div>
           </div>
       </div>
@@ -84,7 +91,6 @@
 </template>
 
 <script>
-// import Message from './components/message/lib/message.vue' // 开发中 调试文件
 
 export default {
   name: 'app',
@@ -93,21 +99,37 @@ export default {
   },
     data() {
       return {
-          ipv4: [],
+          ipv4: '',
+          ipv4Model: '',
           ipv6: [],
-          // subMask: [255,255,0,0]
-          subMask: '255.255.252.0',
-          plain: []
+          subMask: [255,255,0,0],
+          subMaskTest: [],
+          plain: {}
       }
     },
     watch: {
+      'plain.q'(val) {
+          console.log(val);
+      }
     },
     methods: {
+        subTest() {
+            this.subMask = this.subMaskTest;
+            console.log(this.subMaskTest)
+        },
+        inputTest() {
+            this.ipv4Model = this.ipv4;
+            console.log(this.ipv4);
+        },
+        plainInput() {
+            this.$set(this.plain, 'w', this.plain.q);
+            console.log(this.plain)
+        },
         statusSay(val) {
             // console.log(val);
         },
         input(val) {
-            // console.log(val);
+            console.log(val);
         },
         error(ip) {
             // console.log('error', ip)
@@ -133,6 +155,10 @@ export default {
                 }
             });
         }
+    },
+    mounted() {
+      this.$set(this.plain, 't' ,'只读信息');
+      this.ipv4 = '127.0.0.1';
     }
 }
 </script>
@@ -201,6 +227,9 @@ export default {
         }
         .remove-margin:nth-child(4) {
             left: @left * 3;
+        }
+        .remove-margin:nth-child(5) {
+            left: @left * 4;
         }
     }
     .car+.car {

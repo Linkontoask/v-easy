@@ -2,9 +2,11 @@
     <div class="v-easy-input input input-plain"
          :style="{'max-width': maxWidth + 'px'}">
         <input type="text"
-               v-model="val"
+               :value="val"
                :class="error && 'red'"
                :disabled="disabled"
+               :readonly="readonly"
+               v-bind="$attrs"
                @input="handleInput"
                @blur="handleBlur"
                @focus="handleFocus"
@@ -32,6 +34,9 @@
         },
 
         watch: {
+            value (val) {
+                this.setCurrentValue(val);
+            },
             eventContainer(val) {
                 this.mergeMesh(val);
             }
@@ -40,6 +45,7 @@
         props: {
             maxWidth: {type: String},
             disabled: {type: [Boolean, String], default: false},
+            readonly: {type: [Boolean, String], default: false},
             message: {type: String, default: '输入有误'},
             inspect: {type: String, default: '/^.?$/g'},
             type: {type: String, default: 'length'},
@@ -64,11 +70,12 @@
 
         methods: {
             handleInput(event) {
-                this.$emit('input', event);
+                this.setCurrentValue(event.target.value);
 
                 this.mergeMesh('input');
 
-                this.$emit('changeResult', this.val);
+                this.$emit('input', event);
+
             },
             handleBlur(event) {
                 this.$emit('blur', event);
@@ -89,7 +96,12 @@
                     let regexp = new RegExp(this.inspect, 'g');
                     this.error = !regexp.test(this.val);
                 }
-            }
+            },
+            setCurrentValue (value) {
+                if (value === this.val) return;
+                this.val = value;
+                this.$emit('changeResult', this.val);
+            },
         }
     }
 </script>

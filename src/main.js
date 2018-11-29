@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import Message from 'v-easy-message'
-// import Message from './components/v-easy/index'
+// import Message from 'v-easy-message'
+import Message from './components/v-easy/index'
 
 Vue.config.productionTip = false;
 

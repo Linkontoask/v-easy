@@ -9,15 +9,16 @@
                               : ''">
             <li v-for="(val, index) in maxs" :key="index">
                 <input type="text"
-                       v-model="result[index]"
+                       :value="result[index]"
                        :readonly="readonly"
                        :class="errorClass[index]"
                        :maxlength="maxs[index]"
                        :disabled="disabled"
+                       v-bind="$attrs"
                        @keydown="handleKeyDown"
-                       @focus="handleFocus(index)"
-                       @input="handleInput(index)"
-                       @blur="handleBlur(index)"
+                       @focus="handleFocus(index, $event)"
+                       @input="handleInput(index, $event)"
+                       @blur="handleBlur(index, $event)"
                 >
                 <span v-if="index !== (maxs.length - 1)">{{ spliceChar }}</span>
             </li>
@@ -30,6 +31,9 @@
 
 <script>
     export default {
+        model: {
+            event: 'changeResult'
+        },
         name: 'VESubnet',
         data() {
             return {
@@ -62,7 +66,7 @@
             disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
             message: {type: String, default: '请输入正确的子网掩码'},
-            readonly: {type: Boolean, default: false},
+            readonly: {type: [Boolean, String], default: false},
             value: [String, Array],
         },
 
@@ -81,9 +85,9 @@
         },
 
         methods: {
-            handleInput(index) {
+            handleInput(index, $event) {
 
-                this.$emit('input', this.isString ? this.result.join('.') : this.result);
+                this.setCurrentValue($event.target.value, index);
 
                 let first = this.result[index - 1] !== '255';
                 if (index === 0) first = false;
@@ -115,8 +119,10 @@
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
+                this.$emit('input', {$event, index});
+
             },
-            handleBlur(index) {
+            handleBlur(index, $event) {
                 if (index === 3) {
                     let eBool = false,
                         cuIndex = [];
@@ -138,21 +144,26 @@
                 if (isCheck && !this.checkSub(this.result.join('.'))) {
                     this.isMask = true;
                 }
-                this.$emit('blur', index);
+                this.$emit('blur', {$event, index});
             },
             checkSub(mask) {
                 let regexp = /^(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))$/;
                 return regexp.test(mask);
             },
-            handleFocus(index) {
+            handleFocus(index, $event) {
                 this.currentIndex = index;
-                this.$emit('focus', index);
+                this.$emit('focus', {$event, index});
             },
             handleKeyDown(evt) {
                 if (evt.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
                     this.$refs.box.getElementsByTagName('input')[this.currentIndex - 1].focus();
                 }
-            }
+            },
+            setCurrentValue (value, index) {
+                if (value.toString() === this.result.join('.')) return;
+                typeof index !== 'undefined' ? this.$set(this.result, index, value) : this.result = value;
+                this.$emit('changeResult', this.isString ? this.result.join('.') : this.result);
+            },
         }
     }
 </script>

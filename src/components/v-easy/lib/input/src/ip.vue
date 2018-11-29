@@ -10,14 +10,15 @@
             <li v-for="(item, index) in vHtml" :key="index" :class="format">
                 <input type="text"
                        :maxlength="maxlength"
-                       v-model="result[index]"
+                       :value="result[index]"
                        :readonly="readonly"
                        :class="inputRed[index]"
                        :disabled="disabled"
+                       v-bind="$attrs"
                        @keydown="keyDown"
-                       @input="checkResult(index, $event)"
-                       @focus="next(index)"
-                       @blur="handelBlur(index)">
+                       @input="handleInput(index, $event)"
+                       @focus="handleFocus(index, $event)"
+                       @blur="handelBlur(index, $event)">
                 <span v-if="index !== (vHtml.length - 1)">{{ splitChar }}</span>
             </li>
         </ul>
@@ -49,7 +50,7 @@
             width: [String],
             disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
-            readonly: {type: Boolean, default: false},
+            readonly: {type: [Boolean, String], default: false},
             message: {type: String, default: '请输入正确的IP地址'},
             value: [String, Array],
             format: {type: String, default: 'ipv4'}
@@ -60,7 +61,6 @@
                 this.$emit('status', !val);
             },
             result(val) {
-                this.$emit('changeResult', this.isString ? val.join('.') : val);
                 let statusSuccess = true;
                 for (let i = 0; i < 4; i++) {
                     if (typeof val[i] === 'undefined') {
@@ -82,7 +82,6 @@
                     data = data.split('.');
                 }
                 return data;
-
             },
             splitChar() {
                 if (this.spliceChar !== '.') {
@@ -108,12 +107,9 @@
         },
 
         methods: {
-            checkResult(index, $event) {
+            handleInput(index, $event) {
 
-                // 传入value为string
-                if (this.isString) {
-                    this.$emit('changeResult', this.result.join('.'));
-                }
+                this.setCurrentValue($event.target.value, index);
 
                 this.format === 'ipv4' ? this.isIpv4(index) : this.isIpv6(index, $event);
 
@@ -122,7 +118,7 @@
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
-                this.$emit('input', this.isString ? this.result.join('.') : this.result);
+                this.$emit('input', {$event, index});
 
             },
 
@@ -167,12 +163,12 @@
                 }
             },
 
-            next(index) {
+            handleFocus(index, $event) {
                 this.currentIndex = index;
-                this.$emit('focus', index);
+                this.$emit('focus', {$event, index});
             },
 
-            handelBlur(index) {
+            handelBlur(index, $event) {
                 if (index === 7) {
                     let regexp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
                     if (regexp.test(this.result.join(':'))) {
@@ -182,14 +178,20 @@
                         this.$emit('error', this.result);
                     }
                 }
-                this.$emit('blur', index);
+                this.$emit('blur', {$event, index});
             },
 
             keyDown(evt) {
                 if (evt.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
                     this.$refs.box.getElementsByTagName('input')[this.currentIndex - 1].focus();
                 }
-            }
+            },
+
+            setCurrentValue (value, index) {
+                if (value.toString() === this.result.join('.')) return;
+                typeof index !== 'undefined' ? this.$set(this.result, index, value) : this.result = value;
+                this.$emit('changeResult', this.isString ? this.result.join('.') : this.result);
+            },
 
         }
     }
