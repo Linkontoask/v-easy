@@ -192,9 +192,6 @@ export default {
         border: 1px solid #eee;
         padding: 12px 0;
         min-height: 64px;
-        span {
-            margin-top: -28px;
-        }
         > div {
             margin: 12px;
         }
