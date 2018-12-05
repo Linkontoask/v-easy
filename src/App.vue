@@ -64,8 +64,8 @@
               <div class="car-item remove-margin">
                   <h5>校验框(长度校验,失去焦点触发)</h5>
                   <VEPlainInput v-model="plain.q" message="字符超出范围" :options="{
-                    min: 10,
-                    max: 20
+                    min: 20,
+                    max: 30
                   }" @input="plainInput"></VEPlainInput>
               </div>
               <div class="car-item remove-margin">
@@ -102,8 +102,8 @@ export default {
           ipv4: '',
           ipv4Model: '',
           ipv6: [],
-          subMask: [255,255,0,0],
-          subMaskTest: [],
+          subMask: [252,255,0,0],
+          subMaskTest: '',
           plain: {}
       }
     },
@@ -158,7 +158,7 @@ export default {
     },
     mounted() {
       this.$set(this.plain, 't' ,'只读信息');
-      this.ipv4 = '127.0.0.1';
+      // this.ipv4 = '127.0.0.1';
     }
 }
 </script>

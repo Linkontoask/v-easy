@@ -15,7 +15,8 @@
                        :class="inputRed[index]"
                        :disabled="disabled"
                        v-bind="$attrs"
-                       @keydown="keyDown"
+                       @keydown="keyDown(index, $event)"
+                       @keyup="handleKeyUp(index, $event)"
                        @input="handleInput(index, $event)"
                        @focus="handleFocus(index, $event)"
                        @blur="handelBlur(index, $event)">
@@ -41,7 +42,6 @@
               currentIndex: 0,
               maxlength: '3',
               isIP: false,
-              isString: false
           }
         },
 
@@ -78,8 +78,8 @@
                     ? []
                     : this.value;
                 if (!Array.isArray(this.value)) {
-                    this.isString = true;
                     data = data.split('.');
+                    data = data[0] === '' ? [] : data;
                 }
                 return data;
             },
@@ -123,29 +123,22 @@
             },
 
             isIpv4(index) {
-                // 只允许数字
-                let regNumber = /[^0-9]|^0+(?!$)/g;
-                this.result[index] = this.result[index] && this.result[index].replace(regNumber, '');
-                // 结束
-
                 // 正则检验
 
                 if (this.result[index] && this.result[index].length > 3 && index === 3) {
                     this.result[index] = this.result[index].substring(4, 1);
                 }
 
-                if (this.result[index] > 255 && (!this.isIpv4Reg(this.result.join('.'))) && this.result[index] && this.result[index].toString().length !== 0) {
+                if (this.result[index] > 255) {
                     this.inputRed[index] = 'red';
                     this.isIP = true;
-                    this.$emit('error', this.isString ? this.result.join('.') : this.result);
+                    this.$emit('error', this.result);
                 } else {
                     this.inputRed[index] = 'none';
                     this.isIP = false;
                     this.inputRed.forEach(item => {
                         if (item === 'red') {
                             this.isIP = true;
-                            this.$emit('error', this.isString ? this.result.join('.') : this.result);
-                            this.$emit('error', this.isString ? this.result.join('.') : this.result);
                         }
                     });
                 }
@@ -163,13 +156,17 @@
                 }
             },
 
+            handleKeyUp(index, $event) {
+                this.$emit('keyUp', {$event, index});
+            },
+
             handleFocus(index, $event) {
                 this.currentIndex = index;
                 this.$emit('focus', {$event, index});
             },
 
             handelBlur(index, $event) {
-                if (index === 7) {
+                if (index === 7 && this.format === 'ipv6') {
                     let regexp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
                     if (regexp.test(this.result.join(':'))) {
                         this.isIP = false
@@ -178,20 +175,84 @@
                         this.$emit('error', this.result);
                     }
                 }
+                if (this.format === 'ipv4' && index === 3) {
+                    let eBool = false,
+                        cuIndex = [];
+                    this.result.forEach((item, index) => {
+                        if (item === '') {
+                            cuIndex.push(index);
+                            eBool = true
+                        }
+                    });
+                    cuIndex.forEach(item=>{
+                        this.inputRed[item] = 'red';
+                    });
+                    this.isIP = eBool;
+                    let isCheck = false;
+                    this.result.forEach((item) => {
+                        item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
+                    });
+                    if (isCheck && !this.isIpv4Reg(this.result.join('.'))) {
+                        this.isIP = true;
+                    }
+                }
                 this.$emit('blur', {$event, index});
             },
 
-            keyDown(evt) {
-                if (evt.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
+            keyDown(index, $event) {
+                if ($event.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
                     this.$refs.box.getElementsByTagName('input')[this.currentIndex - 1].focus();
                 }
+                if ($event.keyCode === 110 && index !== 3 && $event.target.value !== '') {
+                    this.$refs.box.getElementsByTagName('input')[this.currentIndex + 1].focus();
+                }
+                let obj = this.$refs.box.getElementsByTagName('input'),
+                    current = this.getCursortPosition(obj[index]),
+                    len = $event.target.value.length;
+                if ($event.keyCode === 39 && current >= len && index !== 3) { // 往后
+                    obj[index + 1].focus();
+                    setTimeout(()=>{this.setCaretPosition(obj[index + 1], 0)}, 0);
+                }
+                if ($event.keyCode === 37 && current === 0 && index !== 0) { // 往前
+                    this.$refs.box.getElementsByTagName('input')[index - 1].focus();
+                    setTimeout(()=>{this.setCaretPosition(obj[index - 1], this.result[index - 1] ? this.result[index - 1].length : 0)}, 0);
+                }
+                this.$emit('keyDown', {$event, index});
             },
 
             setCurrentValue (value, index) {
                 if (value.toString() === this.result.join('.')) return;
-                typeof index !== 'undefined' ? this.$set(this.result, index, value) : this.result = value;
-                this.$emit('changeResult', this.isString ? this.result.join('.') : this.result);
+                this.$set(this.result, index, value.replace(/\D/g, ''));
+                this.$emit('changeResult', this.result);
             },
+
+            // 获取光标在输入框中的位置
+            getCursortPosition (el) {
+                let cursorPos = 0;
+                if (document.selection) {
+                    var selectRange = document.selection.createRange();
+                    selectRange.moveStart('character', -el.value.length);
+                    cursorPos = selectRange.text.length;
+                } else {
+                    cursorPos = el.selectionStart;
+                }
+                return cursorPos;
+            },
+
+            setCaretPosition(el, pos){
+                if(el.setSelectionRange) {
+                    // IE Support
+                    el.focus();
+                    el.setSelectionRange(pos, pos);
+                }else if (el.createTextRange) {
+                    // Firefox support
+                    var range = el.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', pos);
+                    range.moveStart('character', pos);
+                    range.select();
+                }
+            }
 
         }
     }

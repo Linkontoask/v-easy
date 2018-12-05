@@ -15,7 +15,8 @@
                        :maxlength="maxs[index]"
                        :disabled="disabled"
                        v-bind="$attrs"
-                       @keydown="handleKeyDown"
+                       @keydown="handleKeyDown(index, $event)"
+                       @keyup="handleKeyUp(index, $event)"
                        @focus="handleFocus(index, $event)"
                        @input="handleInput(index, $event)"
                        @blur="handleBlur(index, $event)"
@@ -41,7 +42,6 @@
                 maxs: ['3', '3', '3', '3'],
                 currentIndex: 0,
                 isMask: false,
-                isString: false
             }
         },
 
@@ -77,8 +77,8 @@
                     ? []
                     : this.value;
                 if (!Array.isArray(this.value)) {
-                    this.isString = true;
                     data = data.split('.');
+                    data = data[0] === '' ? [] : data;
                 }
                 return data;
             }
@@ -115,7 +115,7 @@
                         this.errorClass[index] = 'none'
                     }
                 }
-                if (this.result[index].length >= this.maxs[index] && index !== 3) {
+                if (index !== 3 && this.result[index] && this.result[index].length >= this.maxs[index]) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
@@ -154,16 +154,62 @@
                 this.currentIndex = index;
                 this.$emit('focus', {$event, index});
             },
-            handleKeyDown(evt) {
-                if (evt.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
+            handleKeyUp(index, $event) {
+                this.$emit('keyUp', {$event, index});
+            },
+            handleKeyDown(index, $event) {
+                if ($event.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
                     this.$refs.box.getElementsByTagName('input')[this.currentIndex - 1].focus();
                 }
+                if ($event.keyCode === 110 && index !== 3 && $event.target.value !== '') {
+                    this.$refs.box.getElementsByTagName('input')[this.currentIndex + 1].focus();
+                }
+                let obj = this.$refs.box.getElementsByTagName('input'),
+                    current = this.getCursortPosition(obj[index]),
+                    len = $event.target.value.length;
+                if ($event.keyCode === 39 && current >= len && index !== 3) { // 往后
+                    obj[index + 1].focus();
+                    setTimeout(()=>{this.setCaretPosition(obj[index + 1], 0)}, 0);
+                }
+                if ($event.keyCode === 37 && current === 0 && index !== 0) { // 往前
+                    this.$refs.box.getElementsByTagName('input')[index - 1].focus();
+                    setTimeout(()=>{this.setCaretPosition(obj[index - 1], this.result[index - 1] ? this.result[index - 1].length : 0)}, 0);
+                }
+                this.$emit('keyDown', {$event, index});
             },
             setCurrentValue (value, index) {
                 if (value.toString() === this.result.join('.')) return;
-                typeof index !== 'undefined' ? this.$set(this.result, index, value) : this.result = value;
-                this.$emit('changeResult', this.isString ? this.result.join('.') : this.result);
+                this.$set(this.result, index, value.replace(/\D/g, ''));
+                this.$emit('changeResult', this.result);
             },
+
+            // 获取光标在输入框中的位置
+            getCursortPosition (el) {
+                let cursorPos = 0;
+                if (document.selection) {
+                    var selectRange = document.selection.createRange();
+                    selectRange.moveStart('character', -el.value.length);
+                    cursorPos = selectRange.text.length;
+                } else {
+                    cursorPos = el.selectionStart;
+                }
+                return cursorPos;
+            },
+
+            setCaretPosition(el, pos){
+                if(el.setSelectionRange) {
+                    // IE Support
+                    el.focus();
+                    el.setSelectionRange(pos, pos);
+                }else if (el.createTextRange) {
+                    // Firefox support
+                    var range = el.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', pos);
+                    range.moveStart('character', pos);
+                    range.select();
+                }
+            }
         }
     }
 </script>
