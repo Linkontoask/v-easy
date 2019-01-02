@@ -54,13 +54,13 @@
                   <VESubnet v-model="subMaskTest" @status="statusSay" maxWidth="140" style="color: red" @input="subTest"></VESubnet>
               </div>
           </div>
-          <div class="car">
+          <div class="car" style="display: none;">
               <div class="car-item">
                   <h5>IPV6</h5>
                   <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址" width="530"></VEIp>
               </div>
           </div>
-          <div class="car box">
+          <div class="car box input">
               <div class="car-item remove-margin">
                   <h5>校验框(长度校验,失去焦点触发)</h5>
                   <VEPlainInput v-model="plain.q" message="字符超出范围" :options="{
@@ -86,6 +86,30 @@
               </div>
           </div>
       </div>
+      <div class="group">
+          <h4><i class="fa fa-tag"></i>Switch 开关</h4>
+          <div class="car">
+              <VESwitch v-model="veSwitch.one"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"></VESwitch>
+              <VESwitch
+                      style="display: block"
+                      v-model="veSwitch.two"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      active-text="按月数"
+                      inactive-text="按年份">
+              </VESwitch>
+              <VESwitch
+                      v-model="veSwitch.three"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      active-value="100"
+                      inactive-value="0">
+              </VESwitch>
+              <span>{{ veSwitch.three }}</span>
+          </div>
+      </div>
   </div>
 
 </template>
@@ -104,7 +128,8 @@ export default {
           ipv6: [],
           subMask: [252,255,0,0],
           subMaskTest: '',
-          plain: {}
+          plain: {},
+          veSwitch: {}
       }
     },
     watch: {
@@ -209,11 +234,6 @@ export default {
                 margin-top: -60px;
             }
         }
-        .remove-margin {
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
         @left: 260px;
         .remove-margin:nth-child(2) {
             left: @left * 1;
@@ -228,6 +248,9 @@ export default {
         .remove-margin:nth-child(5) {
             left: @left * 4;
         }
+    }
+    .input {
+        align-items: flex-start;
     }
     .car+.car {
         margin-top: 12px;
