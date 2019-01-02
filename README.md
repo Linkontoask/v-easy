@@ -22,15 +22,42 @@ import vEasy from 'v-easy-message'
 Vue.use(vEasy);
 ```
 
-### Code Start
+### use babel
+``` javascript
+module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [resolve('/node_modules/v-easy-message')]
+      }
+    ]
+  },
+```
+
+### Demo
 ``` javascript
 <template>
     <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
+    <VEPlainInput v-model="str" message="字符超出范围" 
+    :options="{
+        min: 20,
+        max: 30
+    }" 
+    @input="plainInput"></VEPlainInput>
 </template>
 
 <script>
 export default {
+    data() {
+        return: {
+            str: ''
+        }
+    },
     methods: {
+        plainInput(val) {
+            console.log(`%c input ${this.str}`, 'color: blue');
+        },
         send(type) {
             this.$msg({
                 type: type, //'success', 'error','info','warning'
