@@ -2,7 +2,10 @@
     <div class="v-easy-input input input-plain"
          :style="{'max-width': maxWidth + 'px'}">
         <input type="text"
-               :value="val"
+               :value="currentVal"
+               @compositionstart="handleComposition"
+               @compositionupdate="handleComposition"
+               @compositionend="handleComposition"
                :class="error && 'red'"
                :disabled="disabled"
                :readonly="readonly"
@@ -10,9 +13,10 @@
                @input="handleInput"
                @blur="handleBlur"
                @focus="handleFocus"
+               @change="handleChange"
                 >
         <transition name="v-easy-error">
-            <div class="error inspection" v-show="error">{{ msg }}</div>
+            <div class="error inspection" v-show="error" :style="errorOptions">{{ msg }}</div>
         </transition>
     </div>
 </template>
@@ -22,28 +26,35 @@
         model: {
             event: 'changeResult'
         },
-        name: 'VEPlainInput',
+        name: 'VePlainInput',
         data() {
             return {
-                val: this.value === undefined || this.value === null
+                currentVal: this.value === undefined || this.value === null
                     ? ''
                     :this.value,
                 error: false,
-                eventContainer: ''
+                eventContainer: '',
+                isOnComposition: false,
+                valueBeforeComposition: null
             }
         },
 
         watch: {
             value (val) {
                 this.setCurrentValue(val);
+                this.mergeMesh(this.target)
             },
             eventContainer(val) {
                 this.mergeMesh(val);
+            },
+            error(val) {
+                this.$emit('status', !val)
             }
         },
 
         props: {
             maxWidth: {type: String},
+            errorOptions: {type: Object},
             disabled: {type: [Boolean, String], default: false},
             readonly: {type: [Boolean, String], default: false},
             message: {type: String, default: '输入有误'},
@@ -65,14 +76,13 @@
                     ? `${this.message}(${this.options.min} - ${this.options.max})`
                     : this.message
             },
-
         },
 
         methods: {
             handleInput(event) {
                 this.setCurrentValue(event.target.value);
 
-                this.mergeMesh('input');
+                if (this.target === 'input') this.mergeMesh('input');
 
                 this.$emit('input', event);
 
@@ -80,27 +90,45 @@
             handleBlur(event) {
                 this.$emit('blur', event);
 
-                this.eventContainer = 'blur';
+                 if (this.target === 'blur') this.mergeMesh('blur');
             },
             handleFocus(event) {
                 this.$emit('focus', event);
 
-                this.eventContainer = 'focus';
+                if (this.target === 'focus') this.mergeMesh('focus');
+            },
+            handleChange(event) {
+                this.$emit('change', event.target.value);
+            },
+            handleComposition(event) {
+                if (event.type === 'compositionend') {
+                    this.isOnComposition = false;
+                    this.currentVal = this.valueBeforeComposition;
+                    this.valueBeforeComposition = null;
+                    this.handleInput(event);
+                } else {
+                    const text = event.target.value;
+                    const lastCharacter = text[text.length - 1] || '';
+                    this.isOnComposition = !/([(\uAC00-\uD7AF)|(\u3130-\u318F)])+/gi.test(lastCharacter);
+                    if (this.isOnComposition && event.type === 'compositionstart') {
+                        this.valueBeforeComposition = text;
+                    }
+                }
             },
             mergeMesh(val) {
                 if (this.opt_type) {
                     if (val === this.target) {
-                        this.error = (this.val.length < this.options.min || this.val.length > this.options.max);
+                        this.error = (this.currentVal.length < this.options.min || this.currentVal.length > this.options.max);
                     }
                 } else if (this.type === 'reg' && val === this.target) {
-                    let regexp = new RegExp(this.inspect, 'g');
-                    this.error = !regexp.test(this.val);
+                    let regexp = new RegExp(this.inspect);
+                    this.error = !regexp.test(this.currentVal);
                 }
             },
             setCurrentValue (value) {
-                if (value === this.val) return;
-                this.val = value;
-                this.$emit('changeResult', this.val);
+                if (value === this.currentVal) return;
+                this.currentVal = value;
+                this.$emit('changeResult', this.currentVal);
             },
         }
     }

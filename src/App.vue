@@ -5,25 +5,25 @@
       <div class="group">
           <h4><i class="fa fa-tag"></i>按钮</h4>
           <div class="car btn">
-              <VEButton @click="send('info')" class="center" :plain="true" icon="snowflake-o">info</VEButton>
-              <VEButton @click="send('success')" class="center" :plain="true" type="success" icon="bath">success</VEButton>
-              <VEButton @click="send('info')" class="center" :plain="true" type="primary" icon="telegram">primary</VEButton>
-              <VEButton @click="send('warning')" class="center" :plain="true" type="warning" icon="etsy">warning</VEButton>
-              <VEButton @click="send('error')" class="center" :plain="true" type="error" icon="superpowers">error</VEButton>
+              <ve-button @click="send('info')" class="center" :plain="true" icon="snowflake-o">info</ve-button>
+              <ve-button @click="send('success')" class="center" :plain="true" type="success" icon="bath">success</ve-button>
+              <ve-button @click="send('info')" class="center" :plain="true" type="primary" icon="telegram">primary</ve-button>
+              <ve-button @click="send('warning')" class="center" :plain="true" type="warning" icon="etsy">warning</ve-button>
+              <ve-button @click="send('error')" class="center" :plain="true" type="error" icon="superpowers">error</ve-button>
           </div>
           <div class="car btn">
-              <VEButton @click="send('info')" class="center" icon="quote-right">普通按钮</VEButton>
-              <VEButton @click="send('success')" class="center" type="success" :mask="true">成功按钮</VEButton>
-              <VEButton @click="send('info')" @mouseenter="enter" class="center" type="primary" :disabled="true">主要按钮</VEButton>
-              <VEButton @click="send('warning')" class="center" type="warning">警告按钮</VEButton>
-              <VEButton @click="send('error')" class="center" type="error" icon="times-circle">危险按钮</VEButton>
+              <ve-button @click="send('info')" class="center" icon="quote-right">普通按钮</ve-button>
+              <ve-button @click="send('success')" class="center" type="success" :mask="true">成功按钮</ve-button>
+              <ve-button @click="send('info')" @mouseenter="enter" class="center" type="primary" :disabled="true">主要按钮</ve-button>
+              <ve-button @click="send('warning')" class="center" type="warning">警告按钮</ve-button>
+              <ve-button @click="send('error')" class="center" type="error" icon="times-circle">危险按钮</ve-button>
           </div>
           <div class="car btn">
-              <VEButton @click="send('info')" class="center" icon="spinner" :circle="true" :rotate="true"></VEButton>
-              <VEButton @click="send('success')" class="center" type="success" icon="grav" :circle="true" :disabled="true"></VEButton>
-              <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
-              <VEButton @click="send('warning')" class="center" type="warning" icon="exclamation-triangle" :circle="true"  ></VEButton>
-              <VEButton @click="send('error')" class="center" type="error" icon="user-circle" :circle="true" :mask="true"></VEButton>
+              <ve-button @click="send('info')" class="center" icon="spinner" :circle="true" :rotate="true"></ve-button>
+              <ve-button @click="send('success')" class="center" type="success" icon="grav" :circle="true" :disabled="true"></ve-button>
+              <ve-button @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></ve-button>
+              <ve-button @click="send('warning')" class="center" type="warning" icon="exclamation-triangle" :circle="true"  ></ve-button>
+              <ve-button @click="send('error')" class="center" type="error" icon="user-circle" :circle="true" :mask="true"></ve-button>
           </div>
       </div>
       <div class="group">
@@ -31,82 +31,90 @@
           <div class="car">
               <div class="car-item">
                   <h5>IPV4(禁用)</h5>
-                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :disabled="true"></VEIp>
+                  <ve-ip v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :disabled="true"></ve-ip>
               </div>
               <div class="car-item">
                   <h5>IPV4</h5>
-                  <VEIp v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="inputTest"></VEIp>
+                  <ve-ip v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="inputTest"></ve-ip>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>
-                  <VEIp v-model="ipv4Model" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></VEIp>
+                  <ve-ip v-model="ipv4Model" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="input" :readonly="true"></ve-ip>
               </div>
               <div class="car-item">
                   <h5>子网掩码(禁用)</h5>
-                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" :disabled="true"></VESubnet>
+                  <ve-subnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" :disabled="true"></ve-subnet>
               </div>
               <div class="car-item">
                   <h5>子网掩码(只读)</h5>
-                  <VESubnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" readonly="true"></VESubnet>
+                  <ve-subnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" readonly="true"></ve-subnet>
               </div>
               <div class="car-item">
                   <h5>子网掩码</h5>
-                  <VESubnet v-model="subMaskTest" @status="statusSay" maxWidth="140" style="color: red" @input="subTest"></VESubnet>
+                  <ve-subnet v-model="subMaskTest" @status="statusSay" maxWidth="140" style="color: red" @input="subTest"></ve-subnet>
               </div>
           </div>
           <div class="car" style="display: none;">
               <div class="car-item">
                   <h5>IPV6</h5>
-                  <VEIp v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址" width="530"></VEIp>
+                  <ve-ip v-model="ipv6" format="ipv6" message="请输入正确的IPV6地址" width="530"></ve-ip>
               </div>
           </div>
           <div class="car box input">
               <div class="car-item remove-margin">
                   <h5>校验框(长度校验,失去焦点触发)</h5>
-                  <VEPlainInput v-model="plain.q" message="字符超出范围" :options="{
-                    min: 20,
-                    max: 30
-                  }" @input="plainInput"></VEPlainInput>
+                  <ve-plain-input v-model="plain.q" message="字符超出范围"
+                                @input="plainInput"
+                                :options="{
+                                    min: 20,
+                                    max: 30
+                                }"
+                                ></ve-plain-input>
               </div>
               <div class="car-item remove-margin">
                   <h5>校验框(正则校验手机号,失去焦点触发)</h5>
-                  <VEPlainInput v-model="plain.w" message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" @input="plainInput"></VEPlainInput>
+                  <ve-plain-input v-model="plain.w"
+                                :errorOptions = "{
+                                    width: '220px'
+                                }"
+                                @status="getErrorHandle"
+                                message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" @input="plainInput"></ve-plain-input>
               </div>
               <div class="car-item remove-margin">
                   <h5>校验框(输入时触发)</h5>
-                  <VEPlainInput v-model="plain.e" message="名字中必须包含link" type="reg" inspect="link" target="input" @input="plainInput"></VEPlainInput>
+                  <ve-plain-input v-model="plain.e" @error="getErrorHandle" message="名字中必须包含link" type="reg" inspect="link" target="input" @input="plainInput"></ve-plain-input>
               </div>
               <div class="car-item remove-margin">
                   <h5>禁用</h5>
-                  <VEPlainInput v-model="plain.r" disabled="true"></VEPlainInput>
+                  <ve-plain-input v-model="plain.r" disabled="true"></ve-plain-input>
               </div>
               <div class="car-item remove-margin">
                   <h5>只读</h5>
-                  <VEPlainInput v-model="plain.t" readonly="true"></VEPlainInput>
+                  <ve-plain-input v-model="plain.t" readonly="true"></ve-plain-input>
               </div>
           </div>
       </div>
       <div class="group">
           <h4><i class="fa fa-tag"></i>Switch 开关</h4>
           <div class="car">
-              <VESwitch v-model="veSwitch.one"
+              <ve-switch v-model="veSwitch.one"
                         active-color="#13ce66"
-                        inactive-color="#ff4949"></VESwitch>
-              <VESwitch
+                        inactive-color="#ff4949"></ve-switch>
+              <ve-switch
                       style="display: block"
                       v-model="veSwitch.two"
                       active-color="#13ce66"
                       inactive-color="#ff4949"
                       active-text="按月数"
                       inactive-text="按年份">
-              </VESwitch>
-              <VESwitch
+              </ve-switch>
+              <ve-switch
                       v-model="veSwitch.three"
                       active-color="#13ce66"
                       inactive-color="#ff4949"
                       active-value="100"
                       inactive-value="0">
-              </VESwitch>
+              </ve-switch>
               <span>{{ veSwitch.three }}</span>
           </div>
       </div>
@@ -138,6 +146,9 @@ export default {
       }
     },
     methods: {
+        getErrorHandle(status) {
+            console.log('发生错误', status)
+        },
         subTest() {
             this.subMask = this.subMaskTest;
             console.log(this.subMaskTest)

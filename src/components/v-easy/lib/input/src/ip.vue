@@ -34,7 +34,7 @@
         model: {
             event: 'changeResult'
         },
-        name: 'VEIp',
+        name: 'VeIp',
 
         data() {
           return {

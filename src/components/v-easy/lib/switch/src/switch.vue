@@ -38,7 +38,7 @@
 <script>
 
     export default {
-        name: 'VESwitch',
+        name: 'VeSwitch',
         inject: {
             elForm: {
                 default: ''

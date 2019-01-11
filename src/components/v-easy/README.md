@@ -40,11 +40,11 @@ module: {
 <template>
     <VEButton @click="send('info')" class="center" type="primary" icon="chrome" :rotate="true" :circle="true"></VEButton>
     <VEPlainInput v-model="str" message="字符超出范围" 
-    :options="{
-        min: 20,
-        max: 30
-    }" 
-    @input="plainInput"></VEPlainInput>
+        :options="{
+            min: 20,
+            max: 30
+        }" 
+        @input="plainInput"></VEPlainInput>
 </template>
 
 <script>

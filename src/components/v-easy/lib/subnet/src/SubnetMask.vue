@@ -35,7 +35,7 @@
         model: {
             event: 'changeResult'
         },
-        name: 'VESubnet',
+        name: 'VeSubnet',
         data() {
             return {
                 errorClass: [],
