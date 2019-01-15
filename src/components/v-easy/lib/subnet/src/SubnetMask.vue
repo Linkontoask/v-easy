@@ -25,12 +25,13 @@
             </li>
         </ul>
         <transition name="v-easy-error">
-            <div class="error inspection" v-show="isMask">{{ message }}</div>
+            <div class="error inspection" v-show="isMask">{{ msg }}</div>
         </transition>
     </div>
 </template>
 
 <script>
+    import { t } from '../../../local/index'
     export default {
         model: {
             event: 'changeResult'
@@ -65,12 +66,15 @@
             width: [String],
             disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
-            message: {type: String, default: '请输入正确的子网掩码'},
+            message: {type: String},
             readonly: {type: [Boolean, String], default: false},
             value: [String, Array],
         },
 
         computed: {
+            msg() {
+                return this.message || t('subnet.err')
+            },
             result() {
                 let data = [];
                 data = this.value === undefined || this.value === null

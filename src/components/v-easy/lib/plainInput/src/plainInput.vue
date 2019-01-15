@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import { t } from '../../../local/index'
     export default {
         model: {
             event: 'changeResult'
@@ -57,7 +58,7 @@
             errorOptions: {type: Object},
             disabled: {type: [Boolean, String], default: false},
             readonly: {type: [Boolean, String], default: false},
-            message: {type: String, default: '输入有误'},
+            message: {type: String},
             inspect: {type: String, default: '/^.?$/g'},
             type: {type: String, default: 'length'},
             target: {type: String, default: 'blur'},
@@ -74,11 +75,14 @@
             msg() {
                 return this.options
                     ? `${this.message}(${this.options.min} - ${this.options.max})`
-                    : this.message
+                    : (this.message || t('plain.err'))
             },
         },
 
         methods: {
+            err() {
+                return t('plain.err');
+            },
             handleInput(event) {
                 this.setCurrentValue(event.target.value);
 

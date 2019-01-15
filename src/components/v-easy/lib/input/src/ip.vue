@@ -24,12 +24,13 @@
             </li>
         </ul>
         <transition name="v-easy-error">
-            <div class="error inspection" v-show="isIP">{{ message }}</div>
+            <div class="error inspection" v-show="isIP">{{ msg }}</div>
         </transition>
     </div>
 </template>
 
 <script>
+    import { t } from '../../../local/index'
     export default {
         model: {
             event: 'changeResult'
@@ -51,7 +52,7 @@
             disabled: {type: [Boolean, String], default: false},
             spliceChar: {type: String, default: '.'},
             readonly: {type: [Boolean, String], default: false},
-            message: {type: String, default: '请输入正确的IP地址'},
+            message: {type: String},
             value: [String, Array],
             format: {type: String, default: 'ipv4'}
         },
@@ -72,6 +73,9 @@
         },
 
         computed: {
+            msg() {
+                return this.message || t('ip.err')
+            },
             result() {
                 let data = [];
                 data = this.value === undefined || this.value === null

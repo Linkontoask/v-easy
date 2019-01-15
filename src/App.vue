@@ -35,7 +35,7 @@
               </div>
               <div class="car-item">
                   <h5>IPV4</h5>
-                  <ve-ip v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" message="请输入正确的IPV4地址" @error="error" @input="inputTest"></ve-ip>
+                  <ve-ip v-model="ipv4" @status="statusSay" format="ipv4" maxWidth="140" @error="error" @input="inputTest"></ve-ip>
               </div>
               <div class="car-item">
                   <h5>IPV4(只读)</h5>

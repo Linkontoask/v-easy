@@ -4,6 +4,7 @@ import Ip from './lib/input/index'
 import Subnet from './lib/subnet/index'
 import VEPlainInput from './lib/plainInput/index'
 import VESwitch from './lib/switch/index'
+import locale from './local/index'
 
 const components = [
     Message,
@@ -14,7 +15,9 @@ const components = [
     VESwitch
 ];
 
-const install = function (Vue) {
+const install = function (Vue, opts = {}) {
+    locale.use(opts.locale);
+    locale.i18n(opts.i18n);
 
     components.forEach(component => {
        Vue.component(component.name, component)
