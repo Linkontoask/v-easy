@@ -104,6 +104,7 @@ export default {
     padding: 15px 15px 15px 20px;
     display: flex;
     align-items: center;
+    z-index: 9999;
     p {
       margin: 0;
       padding: 0;

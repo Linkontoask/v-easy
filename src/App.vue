@@ -72,11 +72,13 @@
                                 ></ve-plain-input>
               </div>
               <div class="car-item remove-margin">
-                  <h5>校验框(正则校验手机号,失去焦点触发)</h5>
+                  <h5>校验框(正则校验手机号,失去焦点和数据发送改变触发)</h5>
                   <ve-plain-input v-model="plain.w"
+                                  maxWidth="220"
                                 :errorOptions = "{
                                     width: '220px'
                                 }"
+                                :target="['modify', 'blur']"
                                 @status="getErrorHandle"
                                 message="请输入正确的手机号" type="reg" inspect="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" @input="plainInput"></ve-plain-input>
               </div>
@@ -248,7 +250,7 @@ export default {
         @left: 260px;
         .remove-margin:nth-child(2) {
             left: @left * 1;
-            width: 236px;
+            width: 336px;
         }
         .remove-margin:nth-child(3) {
             left: @left * 2;

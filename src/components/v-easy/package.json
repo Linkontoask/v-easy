@@ -1,7 +1,7 @@
 {
   "name": "v-easy-message",
   "description": "vue easy ui",
-  "version": "0.1.41",
+  "version": "0.1.48",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -37,7 +37,8 @@
   "files": [
     "style",
     "lib",
-    "local"
+    "local",
+    "utils"
   ],
   "keywords": [
     "message",

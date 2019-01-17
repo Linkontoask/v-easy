@@ -1,12 +1,12 @@
 <template>
     <div class="v-easy-button button"
-        :type="nativeType"
         :class="[type ? 'easy-button-' + type : '', {
             'is-disabled': buttonDisabled,
             'is-plain': plain,
             'is-circle': circle
           }]">
-        <button @click="handleClick">
+        <button @click="handleClick"
+                :type="nativeType">
             <i :class="['fa', 'fa-' + icon, {
                 'is-rotate': rotate
             }]" v-if="icon"></i>
@@ -63,6 +63,7 @@
 
     .v-easy-button {
         position: relative;
+        display: inline-block;
         button {
             display: inline-block;
             line-height: 1;

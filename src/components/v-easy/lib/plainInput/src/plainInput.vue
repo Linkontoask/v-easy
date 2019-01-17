@@ -23,6 +23,7 @@
 
 <script>
     import { t } from '../../../local/index'
+    import { contain } from '../../../utils/ArrayExtend'
     export default {
         model: {
             event: 'changeResult'
@@ -43,7 +44,8 @@
         watch: {
             value (val) {
                 this.setCurrentValue(val);
-                this.mergeMesh(this.target)
+
+                this.mergeTarget('modify');
             },
             eventContainer(val) {
                 this.mergeMesh(val);
@@ -61,7 +63,7 @@
             message: {type: String},
             inspect: {type: String, default: '/^.?$/g'},
             type: {type: String, default: 'length'},
-            target: {type: String, default: 'blur'},
+            target: {type: [String, Array], default: 'blur'},
             options: [Object, Array],
             value: [String, Object]
         },
@@ -86,7 +88,7 @@
             handleInput(event) {
                 this.setCurrentValue(event.target.value);
 
-                if (this.target === 'input') this.mergeMesh('input');
+                this.mergeTarget('input');
 
                 this.$emit('input', event);
 
@@ -94,15 +96,21 @@
             handleBlur(event) {
                 this.$emit('blur', event);
 
-                 if (this.target === 'blur') this.mergeMesh('blur');
+                this.mergeTarget('blur')
             },
             handleFocus(event) {
                 this.$emit('focus', event);
 
-                if (this.target === 'focus') this.mergeMesh('focus');
+                this.mergeTarget('focus')
             },
             handleChange(event) {
                 this.$emit('change', event.target.value);
+            },
+            mergeTarget(type) {
+                if (Array.isArray(this.target))
+                    contain(this.target, type) && this.mergeMesh(type);
+                else
+                    this.target === type && this.mergeMesh(type);
             },
             handleComposition(event) {
                 if (event.type === 'compositionend') {
@@ -124,7 +132,7 @@
                     if (val === this.target) {
                         this.error = (this.currentVal.length < this.options.min || this.currentVal.length > this.options.max);
                     }
-                } else if (this.type === 'reg' && val === this.target) {
+                } else if (this.type === 'reg' && contain(this.target, val)) {
                     let regexp = new RegExp(this.inspect);
                     this.error = !regexp.test(this.currentVal);
                 }
