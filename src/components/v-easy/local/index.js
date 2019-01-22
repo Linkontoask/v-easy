@@ -11,7 +11,6 @@ let i18nHandler = function() {
     if (typeof vuei18n === 'function' && !!Vue.locale) {
         if (!merged) {
             merged = true;
-            debugger
             Vue.locale(
                 Vue.config.lang,
                 deepmerge(lang, Vue.locale(Vue.config.lang) || {}, { clone: true })
