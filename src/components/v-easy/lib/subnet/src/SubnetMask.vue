@@ -25,31 +25,28 @@
             </li>
         </ul>
         <transition name="v-easy-error">
-            <div class="error inspection" v-show="isMask">{{ msg }}</div>
+            <div class="error inspection" v-show="conformity">{{ msg }}</div>
         </transition>
     </div>
 </template>
 
 <script>
     import { t } from '../../../local/index'
+    import { _initArray } from '../../../utils/ArrayExtend'
+    import merge from '../../../mixins/merge'
     export default {
         model: {
             event: 'changeResult'
         },
         name: 'VeSubnet',
+        mixins: [merge],
         data() {
             return {
-                errorClass: [],
-                maxs: ['3', '3', '3', '3'],
-                currentIndex: 0,
-                isMask: false,
+                maxs: _initArray(4, '3'),
             }
         },
 
         watch: {
-            isMask(val) {
-                this.$emit('status', !val);
-            },
             result(val) {
                 let statusSuccess = true;
                 for (let i = 0; i < 4; i++) {
@@ -75,17 +72,6 @@
             msg() {
                 return this.message || t('subnet.err')
             },
-            result() {
-                let data = [];
-                data = this.value === undefined || this.value === null
-                    ? []
-                    : this.value;
-                if (!Array.isArray(this.value)) {
-                    data = data.split('.');
-                    data = data[0] === '' ? [] : data;
-                }
-                return data;
-            }
         },
 
         methods: {
@@ -101,9 +87,9 @@
                     }
                     if (this.result[index] !== '0') {
                         this.errorClass[index] = 'red';
-                        this.isMask = true;
+                        this.conformity = true;
                     } else {
-                        this.isMask = false;
+                        this.conformity = false;
                         this.errorClass[index] = 'none'
                     }
                 } else {
@@ -113,19 +99,20 @@
                     let regexp = /^(255|254|252|248|240|224|192|128|0)$/;
                     if (!regexp.test(this.result[index]) && this.result[index].length === 3) {
                         this.errorClass[index] = 'red';
-                        this.isMask = true;
+                        this.conformity = true;
                     } else {
-                        this.isMask = false;
-                        this.errorClass[index] = 'none'
+                        this.conformity = false;
+                        this.errorClass[index] = 'none';
                     }
                 }
-                if (index !== 3 && this.result[index] && this.result[index].length >= this.maxs[index]) {
+                if (!this.conformity && index !== 3 && this.result[index] && this.result[index].length >= this.maxs[index]) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
                 this.$emit('input', {$event, index});
 
             },
+
             handleBlur(index, $event) {
                 if (index === 3) {
                     let eBool = false,
@@ -139,28 +126,23 @@
                     cuIndex.forEach(item=>{
                         this.errorClass[item] = 'red';
                     });
-                    this.isMask = eBool;
+                    this.conformity = eBool;
                 }
                 let isCheck = false;
                 this.result.forEach((item) => {
                     item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
                 });
                 if (isCheck && !this.checkSub(this.result.join('.'))) {
-                    this.isMask = true;
+                    this.conformity = true;
                 }
                 this.$emit('blur', {$event, index});
             },
+
             checkSub(mask) {
                 let regexp = /^(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))$/;
                 return regexp.test(mask);
             },
-            handleFocus(index, $event) {
-                this.currentIndex = index;
-                this.$emit('focus', {$event, index});
-            },
-            handleKeyUp(index, $event) {
-                this.$emit('keyUp', {$event, index});
-            },
+
             handleKeyDown(index, $event) {
                 if ($event.keyCode === 8 && this.currentIndex !== 0 && (!this.result[this.currentIndex] || this.result[this.currentIndex].length === 0)) {
                     this.$refs.box.getElementsByTagName('input')[this.currentIndex - 1].focus();
@@ -181,39 +163,6 @@
                 }
                 this.$emit('keyDown', {$event, index});
             },
-            setCurrentValue (value, index) {
-                if (value.toString() === this.result.join('.')) return;
-                this.$set(this.result, index, value.replace(/\D/g, ''));
-                this.$emit('changeResult', this.result);
-            },
-
-            // 获取光标在输入框中的位置
-            getCursortPosition (el) {
-                let cursorPos = 0;
-                if (document.selection) {
-                    var selectRange = document.selection.createRange();
-                    selectRange.moveStart('character', -el.value.length);
-                    cursorPos = selectRange.text.length;
-                } else {
-                    cursorPos = el.selectionStart;
-                }
-                return cursorPos;
-            },
-
-            setCaretPosition(el, pos){
-                if(el.setSelectionRange) {
-                    // IE Support
-                    el.focus();
-                    el.setSelectionRange(pos, pos);
-                }else if (el.createTextRange) {
-                    // Firefox support
-                    var range = el.createTextRange();
-                    range.collapse(true);
-                    range.moveEnd('character', pos);
-                    range.moveStart('character', pos);
-                    range.select();
-                }
-            }
         }
     }
 </script>

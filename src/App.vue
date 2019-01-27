@@ -5,10 +5,15 @@
       <div class="group">
           <h4><i class="fa fa-tag"></i>按钮</h4>
           <div class="car btn">
-              <ve-button @click="send('info')" class="center" :plain="true" icon="snowflake-o">info</ve-button>
-              <ve-button @click="send('success')" class="center" :plain="true" type="success" icon="bath">success</ve-button>
-              <ve-button @click="send('info')" class="center" :plain="true" type="primary" icon="telegram">primary</ve-button>
-              <ve-button @click="send('warning')" class="center" :plain="true" type="warning" icon="etsy">warning</ve-button>
+              <ve-button @click="send('info')" class="center" :plain="true" icon="snowflake-o"
+                         v-tip="{content: 'i am vTip top', placement: 'top'}"
+              >info</ve-button>
+              <ve-button @click="send('success')" class="center" :plain="true" type="success" icon="bath"
+                         v-tip="{content: 'i am vTip bottom', placement: 'bottom'}">success</ve-button>
+              <ve-button @click="send('info')" class="center" :plain="true" type="primary" icon="telegram"
+                         v-tip="{content: 'i am vTip left', placement: 'left'}">primary</ve-button>
+              <ve-button @click="send('warning')" class="center" :plain="true" type="warning" icon="etsy"
+                         v-tip="{content: 'i am vTip right', placement: 'right'}">warning</ve-button>
               <ve-button @click="send('error')" class="center" :plain="true" type="error" icon="superpowers">error</ve-button>
           </div>
           <div class="car btn">
@@ -47,7 +52,8 @@
               </div>
               <div class="car-item">
                   <h5>子网掩码(只读)</h5>
-                  <ve-subnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" readonly="true"></ve-subnet>
+                  <ve-subnet v-model="subMask" @status="statusSay" maxWidth="140" style="color: red" readonly="true"
+                             v-tip="{content: 'i am ve-subnet bottom', placement: 'bottom'}"></ve-subnet>
               </div>
               <div class="car-item">
                   <h5>子网掩码</h5>
@@ -120,12 +126,32 @@
               <span>{{ veSwitch.three }}</span>
           </div>
       </div>
+      <div class="group">
+          <h4><i class="fa fa-tag"></i>v-tip 文字提示框</h4>
+          <div class="car">
+              <ve-button @click="send('info')" class="top" :plain="true" icon="snowflake-o"
+                         v-tip="{content: 'i am vTip top', placement: 'top', offset: 12}"
+              >info</ve-button>
+              <ve-button @click="send('info')" class="left" :plain="true" icon="snowflake-o"
+                         v-tip="{content: 'i am vTip left', placement: 'left', offset: 12}"
+              >info</ve-button>
+              <ve-button @click="send('info')" class="right" :plain="true" icon="snowflake-o"
+                         v-tip="{content: 'i am vTip right', placement: 'right', offset: 12}"
+              >info</ve-button>
+              <ve-button @click="send('info')" class="bottom" :plain="true" icon="snowflake-o"
+                         v-tip="{content: 'i am vTip bottom', placement: 'bottom', offset: 12, enterable: false}"
+              >info</ve-button>
+          </div>
+          <div class="car">
+              <div class="box" v-tip="{content: 'i am vTip top', placement: 'top', offset: 40, vNode: render, hideAfter: 1000}">Top</div>
+          </div>
+      </div>
   </div>
 
 </template>
 
 <script>
-
+import Vue from 'vue'
 export default {
   name: 'app',
   components: {
@@ -148,6 +174,19 @@ export default {
       }
     },
     methods: {
+        render() {
+            return new Vue({
+                data: { node: '' },
+                render(h) {
+                    return (
+                        <div>
+                            <p><a style="color:white" href="#">Test</a></p>
+                            <ve-button v-tip="{content: 'i am vTip right', placement: 'right', offset: 14, enterable: false}">BUTTON</ve-button>
+                        </div>
+                    )
+                }
+            });
+        },
         getErrorHandle(status) {
             console.log('发生错误', status)
         },
@@ -164,10 +203,10 @@ export default {
             console.log(this.plain)
         },
         statusSay(val) {
-            // console.log(val);
+            console.log(val);
         },
         input(val) {
-            console.log(val);
+            // console.log(val);
         },
         error(ip) {
             // console.log('error', ip)
@@ -196,6 +235,7 @@ export default {
     },
     mounted() {
       this.$set(this.plain, 't' ,'只读信息');
+      // console.log(this)
       // this.ipv4 = '127.0.0.1';
     }
 }
@@ -230,6 +270,10 @@ export default {
         border: 1px solid #eee;
         padding: 12px 0;
         min-height: 64px;
+        > .box {
+            width: 120px;
+
+        }
         > div {
             margin: 12px;
         }

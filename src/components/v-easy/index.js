@@ -5,6 +5,7 @@ import Subnet from './lib/subnet/index'
 import VEPlainInput from './lib/plainInput/index'
 import VESwitch from './lib/switch/index'
 import locale from './local/index'
+import vTip from './lib/tooltip/index'
 
 const components = [
     Message,
@@ -12,7 +13,7 @@ const components = [
     Ip,
     Subnet,
     VEPlainInput,
-    VESwitch
+    VESwitch,
 ];
 
 const install = function (Vue, opts = {}) {
@@ -22,6 +23,8 @@ const install = function (Vue, opts = {}) {
     components.forEach(component => {
        Vue.component(component.name, component)
     });
+
+    Vue.use(vTip.directive);
 
     Vue.prototype.$msg = Message;
 

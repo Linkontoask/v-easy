@@ -1,0 +1,52 @@
+<template>
+    <transition :name="transition">
+        <div :class="['tip', 've-tip-'+placement]" v-show="domVisible" @mouseenter="enter" @mouseleave="leave">
+            <p ref="_tip_content__">{{ content }}</p>
+        </div>
+    </transition>
+</template>
+
+<script>
+    export default {
+        name: 'v-tip',
+        data() {
+            return {
+                placement: 'top',
+                vNode: null,
+                content: '',
+                domVisible: false,
+                hover: false,
+                hideAfter: 200,
+                transition: 'fade',
+                enterable: true,
+            };
+        },
+        methods: {
+            enter() {
+                if (!this.enterable) return false;
+                this.hover = true;
+                this.domVisible = true;
+            },
+            leave() {
+                if (this.enterable) {
+                    setTimeout(() => {
+                        !this.hover && (this.domVisible = false);
+                        this.hover = false;
+                    }, this.hideAfter);
+                } else {
+                    this.domVisible = false;
+                }
+            }
+        },
+        mounted() {
+            if (typeof this.vNode === 'object') {
+                this.content = '';
+                this.vNode.$mount(this.$refs._tip_content__);
+            }
+        }
+    }
+</script>
+
+<style lang="less" scoped>
+@import "../../../style/tip/tip";
+</style>

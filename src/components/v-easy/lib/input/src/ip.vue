@@ -12,7 +12,7 @@
                        :maxlength="maxlength"
                        :value="result[index]"
                        :readonly="readonly"
-                       :class="inputRed[index]"
+                       :class="errorClass[index]"
                        :disabled="disabled"
                        v-bind="$attrs"
                        @keydown="keyDown(index, $event)"
@@ -24,25 +24,24 @@
             </li>
         </ul>
         <transition name="v-easy-error">
-            <div class="error inspection" v-show="isIP">{{ msg }}</div>
+            <div class="error inspection" v-show="conformity">{{ msg }}</div>
         </transition>
     </div>
 </template>
 
 <script>
     import { t } from '../../../local/index'
+    import { _initArray } from '../../../utils/ArrayExtend'
+    import merge from '../../../mixins/merge'
     export default {
         model: {
             event: 'changeResult'
         },
         name: 'VeIp',
-
+        mixins: [merge],
         data() {
           return {
-              inputRed: [],
-              currentIndex: 0,
               maxlength: '3',
-              isIP: false,
           }
         },
 
@@ -58,9 +57,6 @@
         },
 
         watch: {
-            isIP(val) {
-                this.$emit('status', !val);
-            },
             result(val) {
                 let statusSuccess = true;
                 for (let i = 0; i < 4; i++) {
@@ -76,17 +72,6 @@
             msg() {
                 return this.message || t('ip.err')
             },
-            result() {
-                let data = [];
-                data = this.value === undefined || this.value === null
-                    ? []
-                    : this.value;
-                if (!Array.isArray(this.value)) {
-                    data = data.split('.');
-                    data = data[0] === '' ? [] : data;
-                }
-                return data;
-            },
             splitChar() {
                 if (this.spliceChar !== '.') {
                     return this.spliceChar;
@@ -97,14 +82,10 @@
                 let len = [];
                 if (this.format === 'ipv4') {
                     this.maxlength = '3';
-                    for(let i = 0; i < 4; i++) {
-                        len.push('')
-                    }
+                    len = _initArray(4);
                 } else if (this.format === 'ipv6' ){
                     this.maxlength = '4';
-                    for(let i = 0; i < 8; i++) {
-                        len.push('')
-                    }
+                    len = _initArray(8);
                 }
                 return len;
             }
@@ -118,7 +99,7 @@
                 this.format === 'ipv4' ? this.isIpv4(index) : this.isIpv6(index, $event);
 
                 // 自动对焦
-                if (this.result[index] && this.result[index].length === Number(this.maxlength) && index < (this.vHtml.length - 1)) {
+                if (!this.conformity && this.result[index] && this.result[index].length === Number(this.maxlength) && index < (this.vHtml.length - 1)) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
 
@@ -134,15 +115,15 @@
                 }
 
                 if (this.result[index] > 255) {
-                    this.inputRed[index] = 'red';
-                    this.isIP = true;
+                    this.errorClass[index] = 'red';
+                    this.conformity = true;
                     this.$emit('error', this.result);
                 } else {
-                    this.inputRed[index] = 'none';
-                    this.isIP = false;
-                    this.inputRed.forEach(item => {
+                    this.errorClass[index] = 'none';
+                    this.conformity = false;
+                    this.errorClass.forEach(item => {
                         if (item === 'red') {
-                            this.isIP = true;
+                            this.conformity = true;
                         }
                     });
                 }
@@ -160,22 +141,13 @@
                 }
             },
 
-            handleKeyUp(index, $event) {
-                this.$emit('keyUp', {$event, index});
-            },
-
-            handleFocus(index, $event) {
-                this.currentIndex = index;
-                this.$emit('focus', {$event, index});
-            },
-
             handelBlur(index, $event) {
                 if (index === 7 && this.format === 'ipv6') {
                     let regexp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
                     if (regexp.test(this.result.join(':'))) {
-                        this.isIP = false
+                        this.conformity = false
                     } else {
-                        this.isIP = true;
+                        this.conformity = true;
                         this.$emit('error', this.result);
                     }
                 }
@@ -189,15 +161,15 @@
                         }
                     });
                     cuIndex.forEach(item=>{
-                        this.inputRed[item] = 'red';
+                        this.errorClass[item] = 'red';
                     });
-                    this.isIP = eBool;
+                    this.conformity = eBool;
                     let isCheck = false;
                     this.result.forEach((item) => {
                         item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
                     });
                     if (isCheck && !this.isIpv4Reg(this.result.join('.'))) {
-                        this.isIP = true;
+                        this.conformity = true;
                     }
                 }
                 this.$emit('blur', {$event, index});
@@ -223,42 +195,7 @@
                 }
                 this.$emit('keyDown', {$event, index});
             },
-
-            setCurrentValue (value, index) {
-                if (value.toString() === this.result.join('.')) return;
-                this.$set(this.result, index, value.replace(/\D/g, ''));
-                this.$emit('changeResult', this.result);
-            },
-
-            // 获取光标在输入框中的位置
-            getCursortPosition (el) {
-                let cursorPos = 0;
-                if (document.selection) {
-                    var selectRange = document.selection.createRange();
-                    selectRange.moveStart('character', -el.value.length);
-                    cursorPos = selectRange.text.length;
-                } else {
-                    cursorPos = el.selectionStart;
-                }
-                return cursorPos;
-            },
-
-            setCaretPosition(el, pos){
-                if(el.setSelectionRange) {
-                    // IE Support
-                    el.focus();
-                    el.setSelectionRange(pos, pos);
-                }else if (el.createTextRange) {
-                    // Firefox support
-                    var range = el.createTextRange();
-                    range.collapse(true);
-                    range.moveEnd('character', pos);
-                    range.moveStart('character', pos);
-                    range.select();
-                }
-            }
-
-        }
+        },
     }
 </script>
 
