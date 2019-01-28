@@ -1,7 +1,7 @@
 <h1 align="center">V-easy</h1>
 
 <p align="center">
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.24-blue.svg" alt=""></a>
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.4-blue.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/size-239kb-green.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>

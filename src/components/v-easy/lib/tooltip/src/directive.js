@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Tip from './tip'
 import { addClass, getStyle } from '../../../utils/dom'
+import { _isEqual } from '../../../utils/ArrayExtend'
 
 const tipDom = Vue.extend(Tip);
 
@@ -57,62 +58,74 @@ tipDirective.install = Vue => {
             }
 
             !el.tip.isConnected && document.body.appendChild(el.tip);
+            el._is_instance_remove_ = false;
 
         }
     };
 
+    const enter = (el, binding, simple) => {
+        if (el._uuid_tip_ && !el._is_instance_remove_) {
+            el.instance.domVisible = true;
+            el.instance.hover = true;
+        } else {
+            el._uuid_tip_ = index;
+            let value = binding.value;
+
+            let data = simple ? {
+                ...value,
+                placement: value['placement'] || 'top',
+                vNode: typeof value['vNode'] === 'function' && value['vNode'](),
+                domVisible: true
+            } : {
+                content: value,
+                domVisible: true,
+            };
+            const tip = new tipDom({
+                el: document.createElement('div'),
+                data,
+            });
+            tip._uuid_tip_ = index;
+            el.instance = tip;
+            el.tip = tip.$el;
+            el.tipStyle = {};
+
+        }
+
+        binding.value && toggleTip(el, binding);
+    };
+
+    const leave = (el) => {
+        el.instance.leave();
+    };
+
     const addEvent = (el, binding, simple) => {
         Vue.nextTick(() => {
-            el.addEventListener('mouseenter', e => {
-                if (el._uuid_tip_) {
-                    el.instance.domVisible = true;
-                    el.instance.hover = true;
-                } else {
-                    el._uuid_tip_ = index;
-                    let value = binding.value;
-
-                    let data = simple ? {
-                        ...value,
-                        placement: value['placement'] || 'top',
-                        vNode: typeof value['vNode'] === 'function' && value['vNode'](),
-                        domVisible: true
-                    } : {
-                        content: value,
-                        domVisible: true,
-                    };
-                    const tip = new tipDom({
-                        el: document.createElement('div'),
-                        data,
-                    });
-                    el.instance = tip;
-                    el.tip = tip.$el;
-                    el.tipStyle = {};
-
-                }
-
-                binding.value && toggleTip(el, binding);
-            });
-            el.addEventListener('mouseleave', e => {
-
-                el.instance.leave();
-
-            })
+            el.addEventListener('mouseenter', enter.bind(null, el, binding, simple), false);
+            el.addEventListener('mouseleave', leave.bind(null, el), false);
         });
     };
 
     Vue.directive('tip', {
-        bind: function(el, binding, vnode) {
+        bind: function(el, binding) {
 
             el._uuid_tip_ = 0;
-            if (typeof binding.value === 'string') {
-                addEvent(el, binding, false);
-            } else {
-                addEvent(el, binding, true);
-            }
+            el._is_instance_remove_ = false;
+
+            addEvent(el, binding, typeof binding.value !== 'string');
 
         },
 
         update: function(el, binding) {
+            if (!_isEqual(binding.value, binding.oldValue)) {
+                if (el.tip.isConnected)  {
+                    document.body.removeChild(el.tip);
+                    el.removeEventListener('mouseenter', enter, false);
+                    el.removeEventListener('mouseleave', leave, false);
+                    el._is_instance_remove_ = true;
+                }
+                enter(el, binding, typeof binding.value !== 'string');
+                addEvent(el, binding, typeof binding.value !== 'string');
+            }
         },
 
         unbind: function(el, binding) {

@@ -139,12 +139,12 @@
                          v-tip="{content: 'i am vTip right', placement: 'right', offset: 12}"
               >info</ve-button>
               <ve-button @click="send('info')" class="bottom" :plain="true" icon="snowflake-o"
-                         v-tip="{content: 'i am vTip bottom', placement: 'bottom', offset: 12, enterable: false}"
+                         v-tip="'i am vtip'"
               >info</ve-button>
           </div>
           <div class="car">
-              <div class="box" v-tip="{content: 'i am vTip top', placement: 'top', offset: 34, vNode: render, enterable: true, hideAfter: 100}">Top</div>
-              <p>嵌套TIP框，第二个TIP禁止鼠标移入</p>
+              <div style="margin: 0 auto" class="box" v-tip="{content: 'i am vTip top', placement: 'top', offset: 34, vNode: render, enterable: true, hideAfter: 100, Class: ['my-tip', 'my-tip-2']}">Top</div>
+              <p style="width: 100%;">嵌套TIP框，第二个TIP禁止鼠标移入</p>
           </div>
       </div>
   </div>
@@ -177,19 +177,22 @@ export default {
     methods: {
         render() {
             return new Vue({
-                data: { name: 'Home' },
+                data: { name: 'Home', placement: 'right'},
                 render(h) {
                     return (
                         <div>
                             <h1><em style="color: #e4961e">vNode</em>节点。</h1>
                             <p><a style="color:white" href="https://linkorg.club">{this.name}</a></p>
-                            <ve-button onClick={this.add} v-tip={{content: 'i am vEasy Button , I am on the right side of the button', placement: 'right', offset: 34, enterable: false}}>Get timeStamp</ve-button>
+                            <ve-button onClick={this.add} v-tip={{content: 'i am vEasy '+this.placement+' , I am on the right side of the button', placement: this.placement, offset: 34, enterable: false}}>Get timeStamp</ve-button>
                         </div>
                     )
                 },
                 methods: {
                     add() {
-                        this.name = new Date().getTime()
+                        this.name = new Date().getTime();
+                        let p = ['left', 'right', 'top', 'bottom'][Math.floor(Math.random() * 4)];
+                        console.log(p)
+                        this.placement = p;
                     }
                 }
             });

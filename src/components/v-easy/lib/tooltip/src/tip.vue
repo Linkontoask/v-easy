@@ -1,6 +1,6 @@
 <template>
     <transition :name="transition">
-        <div :class="['tip', 've-tip-'+placement]" v-show="domVisible" @mouseenter="enter" @mouseleave="leave">
+        <div :class="['tip', 've-tip-'+placement, Class]" v-show="domVisible" @mouseenter="enter" @mouseleave="leave">
             <p ref="_tip_content__">{{ content }}</p>
         </div>
     </transition>
@@ -12,6 +12,7 @@
         data() {
             return {
                 placement: 'top',
+                Class: [],
                 vNode: '',
                 content: '',
                 domVisible: false,
