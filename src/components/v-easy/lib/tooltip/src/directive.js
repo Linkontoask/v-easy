@@ -78,6 +78,7 @@ tipDirective.install = Vue => {
                         domVisible: true
                     } : {
                         content: value,
+                        domVisible: true,
                     };
                     const tip = new tipDom({
                         el: document.createElement('div'),
