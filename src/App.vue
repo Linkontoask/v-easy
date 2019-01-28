@@ -181,7 +181,7 @@ export default {
                 render(h) {
                     return (
                         <div>
-                            <h1><em style="color: #e4961e">vNode</em>节点。</h1>
+                            <h1><em style="color: #e4961e">vNode</em></h1>
                             <p><a style="color:white" href="https://linkorg.club">{this.name}</a></p>
                             <ve-button onClick={this.add} v-tip={{content: 'i am vEasy '+this.placement+' , I am on the right side of the button', placement: this.placement, offset: 34, enterable: false}}>Get timeStamp</ve-button>
                         </div>
@@ -191,7 +191,6 @@ export default {
                     add() {
                         this.name = new Date().getTime();
                         let p = ['left', 'right', 'top', 'bottom'][Math.floor(Math.random() * 4)];
-                        console.log(p)
                         this.placement = p;
                     }
                 }
