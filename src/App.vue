@@ -127,7 +127,7 @@
           </div>
       </div>
       <div class="group">
-          <h4><i class="fa fa-tag"></i>v-tip 文字提示框</h4>
+          <h4><i class="fa fa-tag"></i>v-tip 提示框（使用 <em style="color: #e4961e">vNode</em>，可自定义vNode节点）</h4>
           <div class="car">
               <ve-button @click="send('info')" class="top" :plain="true" icon="snowflake-o"
                          v-tip="{content: 'i am vTip top', placement: 'top', offset: 12}"
@@ -143,7 +143,8 @@
               >info</ve-button>
           </div>
           <div class="car">
-              <div class="box" v-tip="{content: 'i am vTip top', placement: 'top', offset: 40, vNode: render, hideAfter: 1000}">Top</div>
+              <div class="box" v-tip="{content: 'i am vTip top', placement: 'top', offset: 34, vNode: render, enterable: true, hideAfter: 100}">Top</div>
+              <p>嵌套TIP框，第二个TIP禁止鼠标移入</p>
           </div>
       </div>
   </div>
@@ -165,7 +166,7 @@ export default {
           subMask: [252,255,0,0],
           subMaskTest: '',
           plain: {},
-          veSwitch: {}
+          veSwitch: {},
       }
     },
     watch: {
@@ -176,14 +177,20 @@ export default {
     methods: {
         render() {
             return new Vue({
-                data: { node: '' },
+                data: { name: 'Home' },
                 render(h) {
                     return (
                         <div>
-                            <p><a style="color:white" href="#">Test</a></p>
-                            <ve-button v-tip="{content: 'i am vTip right', placement: 'right', offset: 14, enterable: false}">BUTTON</ve-button>
+                            <h1><em style="color: #e4961e">vNode</em>节点。</h1>
+                            <p><a style="color:white" href="https://linkorg.club">{this.name}</a></p>
+                            <ve-button onClick={this.add} v-tip={{content: 'i am vEasy Button , I am on the right side of the button', placement: 'right', offset: 34, enterable: false}}>Get timeStamp</ve-button>
                         </div>
                     )
+                },
+                methods: {
+                    add() {
+                        this.name = new Date().getTime()
+                    }
                 }
             });
         },
@@ -272,7 +279,10 @@ export default {
         min-height: 64px;
         > .box {
             width: 120px;
-
+            line-height: 84px;
+            font-size: 2rem;
+            cursor: pointer;
+            border: 2px solid #eee;
         }
         > div {
             margin: 12px;

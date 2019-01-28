@@ -61,22 +61,27 @@ tipDirective.install = Vue => {
         }
     };
 
-    const addEvent = (el, binding) => {
+    const addEvent = (el, binding, simple) => {
         Vue.nextTick(() => {
             el.addEventListener('mouseenter', e => {
                 if (el._uuid_tip_) {
                     el.instance.domVisible = true;
+                    el.instance.hover = true;
                 } else {
                     el._uuid_tip_ = index;
                     let value = binding.value;
+
+                    let data = simple ? {
+                        ...value,
+                        placement: value['placement'] || 'top',
+                        vNode: typeof value['vNode'] === 'function' && value['vNode'](),
+                        domVisible: true
+                    } : {
+                        content: value,
+                    };
                     const tip = new tipDom({
                         el: document.createElement('div'),
-                        data: {
-                            ...value,
-                            placement: value.placement || 'top',
-                            vNode: typeof value.vNode === 'function' && value.vNode(),
-                            domVisible: true
-                        }
+                        data,
                     });
                     el.instance = tip;
                     el.tip = tip.$el;
@@ -99,9 +104,10 @@ tipDirective.install = Vue => {
 
             el._uuid_tip_ = 0;
             if (typeof binding.value === 'string') {
-                eval(`binding.value = ${binding.value}`);
+                addEvent(el, binding, false);
+            } else {
+                addEvent(el, binding, true);
             }
-            addEvent(el, binding);
 
         },
 

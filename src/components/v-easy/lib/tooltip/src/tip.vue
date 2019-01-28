@@ -12,13 +12,13 @@
         data() {
             return {
                 placement: 'top',
-                vNode: null,
+                vNode: '',
                 content: '',
                 domVisible: false,
                 hover: false,
                 hideAfter: 200,
                 transition: 'fade',
-                enterable: true,
+                enterable: false,
             };
         },
         methods: {
@@ -28,10 +28,10 @@
                 this.domVisible = true;
             },
             leave() {
+                this.hover = false;
                 if (this.enterable) {
                     setTimeout(() => {
                         !this.hover && (this.domVisible = false);
-                        this.hover = false;
                     }, this.hideAfter);
                 } else {
                     this.domVisible = false;
