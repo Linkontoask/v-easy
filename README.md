@@ -35,6 +35,7 @@ Vue.use(vEasy, { locale });
 
 ### use babel
 ``` javascript
+// webpack.base.conf.js
 module: {
     rules: [
       {
@@ -43,7 +44,10 @@ module: {
         include: [resolve('/node_modules/v-easy-message')]
       }
     ]
-  },
+},
+
+// vue.config.js (vue-cli3)
+transpileDependencies: ['v-easy-message']
 ```
 
 ### Demo
