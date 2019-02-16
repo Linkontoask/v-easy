@@ -1,7 +1,7 @@
 <h1 align="center">V-easy</h1>
 
 <p align="center">
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.24-blue.svg" alt=""></a>
+	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.41-blue.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/size-239kb-green.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt=""></a>
 	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>
@@ -86,29 +86,31 @@ export default {
 ```
 
 ### Update
++ 0.2.41 (2019.2.16)
+    + 优化 `v-tip` 字体模糊问题
 + 0.2.25 (2019.1.28)
-    + ve-ip和ve-subnet发生错误不会自动对焦到下一位
+    + `ve-ip` 和 `ve-subnet` 发生错误不会自动对焦到下一位
     + 新增v-tip信息框
 + 0.1.48 (2019.1.17)
-    + 新增ve-plain-input触发接收类型，支持多种类型触发检测
+    + 新增 `ve-plain-input` 触发接收类型，支持多种类型触发检测
     + 支持多语言版本
 + 0.1.18 (2018.10.5)
-    + ve-ip和ve-subnet类似于windows输入框，可使用鼠标操作，小数点偏移
+    + `ve-ip` 和 `ve-subnet` 类似于windows输入框，可使用鼠标操作，小数点偏移
 + 0.1.16 (2018.9.29)
-    + 修复ve-ip、ve-plain-input、ve-subnet绑定数据的问题
+    + 修复 `ve-ip`、`ve-plain-input`、`ve-subnet` 绑定数据的问题
 + 0.1.13 (2018.9.28)
-    + 新增ve-plain-input组件
+    + 新增 `ve-plain-input` 组件
 + 0.1.12 (2018.9.27)
-    + 优化ve-ip和ve-subnet组件
+    + 优化 `ve-ip` 和 `ve-subnet` 组件
 + 0.0.8 (2018.9.27)
-    + 新增ve-subnet组件，优化样式代码
+    + 新增 `ve-subnet` 组件，优化样式代码
 + 0.0.5 (2018.8.29)
-    + 新增ve-ip组件
+    + 新增 `ve-ip` 组件
 + 0.0.4 (2018.8.25)
-    + 新增ve-button组件
+    + 新增 `ve-button` 组件
 + 0.0.1 (2018.8.23)
     + 建立仓库，编写架构
-    + 支持使用this.$msg呼叫message信息
+    + 支持使用 `this.$msg` 呼叫message信息
 
 ### LICENSE
 [MIT](https://github.com/Linkontoask/v-easy/blob/master/src/components/message/LICENSE)
