@@ -64,6 +64,10 @@
                         statusSuccess = false;
                     }
                 }
+                if (val.every( item => item === ''))  {
+                    this.conformity = false;
+                    this.errorClass = []; // 如果数据全部为空，那么对错误信息进行影藏
+                }
                 if (statusSuccess && val.length > 3) this.$emit('status', this.isIpv4Reg(val.join('.')));
             }
         },
@@ -152,18 +156,6 @@
                     }
                 }
                 if (this.format === 'ipv4' && index === 3) {
-                    let eBool = false,
-                        cuIndex = [];
-                    this.result.forEach((item, index) => {
-                        if (item === '') {
-                            cuIndex.push(index);
-                            eBool = true
-                        }
-                    });
-                    cuIndex.forEach(item=>{
-                        this.errorClass[item] = 'red';
-                    });
-                    this.conformity = eBool;
                     let isCheck = false;
                     this.result.forEach((item) => {
                         item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;

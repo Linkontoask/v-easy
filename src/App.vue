@@ -171,7 +171,7 @@ export default {
     },
     watch: {
       'plain.q'(val) {
-          console.log(val);
+        //   console.log(val);
       }
     },
     methods: {
@@ -197,19 +197,19 @@ export default {
             });
         },
         getErrorHandle(status) {
-            console.log('发生错误', status)
+            // console.log('发生错误', status)
         },
         subTest() {
             this.subMask = this.subMaskTest;
-            console.log(this.subMaskTest)
+            // console.log(this.subMaskTest)
         },
         inputTest() {
             this.ipv4Model = this.ipv4;
-            console.log(this.ipv4);
+            // console.log(this.ipv4);
         },
         plainInput() {
             this.$set(this.plain, 'w', this.plain.q);
-            console.log(this.plain)
+            // console.log(this.plain)
         },
         statusSay(val) {
             console.log(val);
