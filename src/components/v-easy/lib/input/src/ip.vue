@@ -66,7 +66,7 @@
                 }
                 if (val.every( item => item === ''))  {
                     this.conformity = false;
-                    this.errorClass = []; // 如果数据全部为空，那么对错误信息进行影藏
+                    this.errorClass = []; // 如果数据全部为空，那么对错误信息进行隐藏
                 }
                 if (statusSuccess && val.length > 3) this.$emit('status', this.isIpv4Reg(val.join('.')));
             }
