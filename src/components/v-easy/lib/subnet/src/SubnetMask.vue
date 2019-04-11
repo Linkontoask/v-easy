@@ -112,7 +112,7 @@
                 if (!this.conformity && index !== 3 && this.result[index] && this.result[index].length >= this.maxs[index]) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
-                if ($event.target.value == 0) {
+                if (Number($event.target.value) === 0) {
                     this.maxs[index] = '1';
                 }
 
