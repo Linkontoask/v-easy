@@ -113,4 +113,4 @@ export default {
     + 支持使用 `this.$msg` 呼叫message信息
 
 ### LICENSE
-[MIT](https://github.com/Linkontoask/v-easy/blob/master/src/components/message/LICENSE)
+[MIT](https://raw.githubusercontent.com/Linkontoask/v-easy/master/src/components/v-easy/LICENSE)
