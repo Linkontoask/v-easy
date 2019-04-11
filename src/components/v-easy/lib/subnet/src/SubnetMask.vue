@@ -112,16 +112,16 @@
                 if (!this.conformity && index !== 3 && this.result[index] && this.result[index].length >= this.maxs[index]) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
+                if ($event.target.value == 0) {
+                    this.maxs[index] = '1';
+                }
 
                 this.$emit('input', {$event, index});
 
             },
 
             handleBlur(index, $event) {
-                let isCheck = false;
-                this.result.forEach((item) => {
-                    item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
-                });
+                let isCheck = this.result.length > 3 && this.result.every(item => item !== '');
                 if (isCheck && !this.checkSub(this.result.join('.'))) {
                     this.conformity = true;
                 }

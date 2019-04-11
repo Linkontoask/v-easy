@@ -9,7 +9,7 @@
                               : ''">
             <li v-for="(item, index) in vHtml" :key="index" :class="format">
                 <input type="text"
-                       :maxlength="maxlength"
+                       :maxlength="maxlength[index]"
                        :value="result[index]"
                        :readonly="readonly"
                        :class="errorClass[index]"
@@ -41,7 +41,7 @@
         mixins: [merge],
         data() {
           return {
-              maxlength: '3',
+              maxlength: _initArray(4, '3'),
           }
         },
 
@@ -85,10 +85,10 @@
             vHtml() {
                 let len = [];
                 if (this.format === 'ipv4') {
-                    this.maxlength = '3';
+                    this.maxlength = _initArray(4, '3');
                     len = _initArray(4);
                 } else if (this.format === 'ipv6' ){
-                    this.maxlength = '4';
+                    this.maxlength = _initArray(8, '4');
                     len = _initArray(8);
                 }
                 return len;
@@ -102,10 +102,17 @@
 
                 this.format === 'ipv4' ? this.isIpv4(index) : this.isIpv6(index, $event);
 
+                if ($event.target.value == 0) {
+                    this.maxlength[index] = '1';
+                } else {
+                    this.maxlength[index] = this.format === 'ipv4' ? '3' : '4';
+                }
+
                 // 自动对焦
-                if (!this.conformity && this.result[index] && this.result[index].length === Number(this.maxlength) && index < (this.vHtml.length - 1)) {
+                if (!this.conformity && this.result[index] && this.result[index].length === Number(this.maxlength[index]) && index < (this.vHtml.length - 1)) {
                     this.$refs.box.getElementsByTagName('input')[index + 1].focus();
                 }
+                
 
                 this.$emit('input', {$event, index});
 
@@ -156,10 +163,7 @@
                     }
                 }
                 if (this.format === 'ipv4' && index === 3) {
-                    let isCheck = false;
-                    this.result.forEach((item) => {
-                        item !== '' && this.result.length > 3 ? isCheck = true : isCheck = false;
-                    });
+                    let isCheck = this.result.length > 3 && this.result.every(item => item !== '');
                     if (isCheck && !this.isIpv4Reg(this.result.join('.'))) {
                         this.conformity = true;
                     }
