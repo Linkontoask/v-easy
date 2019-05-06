@@ -1,7 +1,7 @@
 <template>
     <div class="v-easy-input input input-plain"
          :style="{'max-width': maxWidth + 'px'}">
-        <input type="text"
+        <input :type="typeInput"
                :value="currentVal"
                @compositionstart="handleComposition"
                @compositionupdate="handleComposition"
@@ -63,6 +63,7 @@
             message: {type: String},
             inspect: {type: String, default: '/^.?$/g'},
             type: {type: String, default: 'length'},
+            typeInput: {type: String, default: 'text'},
             target: {type: [String, Array], default: 'blur'},
             options: [Object, Array],
             value: [String, Object]
