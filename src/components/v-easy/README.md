@@ -1,10 +1,10 @@
 <h1 align="center">V-easy</h1>
 
 <p align="center">
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.45-blue.svg" alt=""></a>
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/size-239kb-green.svg" alt=""></a>
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt=""></a>
-	<a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>
+    <a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/v--easy-v0.2.50-blue.svg" alt=""></a>
+    <a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/size-239kb-green.svg" alt=""></a>
+    <a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/vue-2.x-orange.svg" alt=""></a>
+    <a href="https://github.com/Linkontoask/v-easy"><img src="https://img.shields.io/badge/license-MIT-red.svg" alt=""></a>
 </p>
 
 ### Demo
@@ -113,4 +113,4 @@ export default {
     + 支持使用 `this.$msg` 呼叫message信息
 
 ### LICENSE
-[MIT](https://github.com/Linkontoask/v-easy/blob/master/src/components/message/LICENSE)
+[MIT](https://raw.githubusercontent.com/Linkontoask/v-easy/master/src/components/v-easy/LICENSE)
